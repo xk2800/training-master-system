@@ -1,1 +1,0 @@
-Preserve this directory for SQLite database file(s).
