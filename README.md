@@ -14,6 +14,9 @@ cd server
 npm install
 ```
 
+### Environment Setup
+create `.env` file and paste everything from `.envexample`
+
 ### Development
 ```
 cd client
