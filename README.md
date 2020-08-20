@@ -15,7 +15,7 @@ npm install
 ```
 
 ### Environment Setup
-create `.env` file and paste everything from `.envexample`
+create `.env` file and paste everything from `.env.example`
 
 ### Development
 ```
