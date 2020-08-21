@@ -23,7 +23,9 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios'
   ],
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:8000'
+  },
   build: {
   }
 }
