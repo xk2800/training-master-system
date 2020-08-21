@@ -11,6 +11,10 @@ export default {
     allowNull: false,
     primaryKey: true
   },
+  subject: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
   content: {
     type: DataTypes.BLOB,
     allowNull: false
