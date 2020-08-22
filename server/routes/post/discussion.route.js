@@ -1,7 +1,6 @@
 /**
  * create a new discussion post
  * request:
- *   - subject: discussion post's subject
  *   - content: discussion post's content
  * response:
  *   - status: 0 = success, 1 = fail, 2 = error occurs
@@ -12,7 +11,7 @@ import { models } from '../../db.js'
 const { discussion } = models
 
 export default (req, res) => {
-  const {subject, content} = req.body
+  const content = req.body
   console.log(req.body);
 
   if(!subject || !content) {
@@ -22,7 +21,6 @@ export default (req, res) => {
   discussion
     .create({
       defaults: {
-        subject: subject,
         content: content
       }
     })
