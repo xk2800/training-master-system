@@ -12,6 +12,7 @@ export default (req, res) => {
     .then(data => {
       res.status(200).json(data);
       console.log('data: ' + data);
+      return
     })
     .catch((error) => {
       console.log(error);
@@ -24,6 +25,7 @@ export default (req, res) => {
     .then(data => {
       res.status(200).json(data.content);
       console.log('data: ' + data.content);
+      return
     })
     .catch((error) => {
       console.log(error);
