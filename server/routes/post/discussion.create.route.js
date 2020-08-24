@@ -8,21 +8,19 @@
 
 import { models } from '../../db.js'
 
-const { discussion } = models
+const { discussion } = models;
 
 export default (req, res) => {
-  const content = req.body
+  const content = req.body;
   console.log(req.body);
 
-  if(!subject || !content) {
-    res.status(400).send('Subject or content cannot be empty');
+  if(!content) {
+    res.status(400).send('Content cannot be empty');
     return
   }
   discussion
     .create({
-      defaults: {
-        content: content
-      }
+      content: content
     })
     .then(([model_discussion, isCreated]) => {
       if (!isCreated) {

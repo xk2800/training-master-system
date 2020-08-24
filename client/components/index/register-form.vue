@@ -10,11 +10,11 @@
       </b-form-group>
       <b-form-group>
         <label for="reg-email-input">Email address</label>
-        <input v-model="credentials.email" type="text" class="form-control" placeholder="Enter email">
+        <input v-model="credentials.email" type="email" class="form-control" placeholder="Enter email">
       </b-form-group>
       <b-form-group>
         <label for="reg-password-input">Password</label>
-        <input v-model="credentials.password" type="text" class="form-control" placeholder="Password">
+        <input v-model="credentials.password" type="password" class="form-control" placeholder="Password">
       </b-form-group>
       <b-row class="justify-content-center mt-4">
         <button type="submit" class="btn btn-primary">
