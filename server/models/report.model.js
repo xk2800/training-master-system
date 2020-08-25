@@ -9,6 +9,7 @@ export default {
   id: {
     type: DataTypes.BIGINT,
     allowNull: false,
+    autoIncrement: true,
     primaryKey: true
   },
   date: {
