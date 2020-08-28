@@ -38,8 +38,6 @@ export default {
         .then((res) => {
           if (res.data.status === 0) {
             this.makeToast('Success!', 'Discussion successfully posted', 'success')
-          } else if (res.data.status === 1) {
-            this.makeToast('Fail!', 'Discussion failed to post', 'error')
           }
         })
         .catch((error) => {

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <b-card title="Discussion Forum" class="mb-2 text-center">
-      {{ discussion }}
-    </b-card>
+    <b-card-group v-for="discussions in discussion" :key="discussions">
+      <b-card class="text-center">
+        {{ discussions.content }}
+      </b-card>
+    </b-card-group>
   </div>
 </template>
 
@@ -10,7 +12,8 @@
 export default {
   data () {
     return {
-      discussion: []
+      discussion: [],
+      error: ''
     }
   },
   created () {

@@ -4,7 +4,6 @@ const { discussion } = models;
 
 export default (req, res) => {
   const id = null; // req.params.id
-  console.log(id);
   
   if(id == null) {
     discussion

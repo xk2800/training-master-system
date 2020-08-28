@@ -11,7 +11,7 @@ import { models } from '../../db.js'
 const { discussion } = models;
 
 export default (req, res) => {
-  const { content } = req.body;
+  const { content } = req.body
   console.log(req.body);
 
   if(!content) {
@@ -22,7 +22,7 @@ export default (req, res) => {
     .create({
       content: content
     })
-    .then((data) => {
+    .then((model_discussion) => {
       res.status(200).json({ status: 0 })
     })
     .catch((error) => {

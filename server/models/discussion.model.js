@@ -13,7 +13,7 @@ export default {
     primaryKey: true
   },
   content: {
-    type: DataTypes.BLOB,
+    type: DataTypes.TEXT,
     allowNull: false
   }
 }
