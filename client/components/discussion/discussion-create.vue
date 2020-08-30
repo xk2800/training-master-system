@@ -2,13 +2,12 @@
   <div>
     <b-form @submit="onSubmit">
       <b-form-group class="mt-4">
-        <label for="dis-content-input">Content</label>
         <b-form-textarea
           v-model="content"
           type="text"
-          class="form-control"
-          placeholder="Enter discussion post content"
-          rows="5"
+          class="form-control border-round"
+          placeholder="Enter your discussions"
+          rows="1"
         />
       </b-form-group>
       <b-row class="justify-content-center mt-4">

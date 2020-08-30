@@ -1,37 +1,31 @@
 <template>
-  <b-container>
-    <b-row class="align-self-center vertical-center">
-      <b-col lg="6" md="12" class="mx-auto">
-        <b-card class="px-sm-1 px-md-3 py-2 border-round">
-          <Title class="text-center my-3 bold">
-            Discussion Forum
-          </Title>
-          <ForumContent />
-        </b-card>
-      </b-col>
-    </b-row>
-  </b-container>
+  <div>
+    <Navbar />
+    <b-container>
+      <Title class="text-center my-3 bold">
+        Discussion Forum
+      </Title>
+      <Discussionboard />
+    </b-container>
+  </div>
 </template>
 
 <script>
-import ForumContent from '~/components/discussion/forum-tabs'
 import Title from '~/components/text/title'
+import Navbar from '~/components/navbar'
+import Discussionboard from '~/components/discussion/discussion-board'
 
 export default {
   components: {
-    ForumContent,
-    Title
+    Navbar,
+    Title,
+    Discussionboard
   }
 }
 </script>
 
 <style>
-.vertical-center {
-  padding-top: 10rem;
-  padding-bottom: 15rem;
-}
-
 body {
-  background-color: rgb(69, 177, 247);
+  background-color: rgb(247, 247, 247);
 }
 </style>

@@ -1,8 +1,11 @@
 <template>
   <div>
-    <b-card-group v-for="discussions in discussion" :key="discussions">
-      <b-card class="text-center">
-        {{ discussions.content }}
+    <b-card-group v-for="discussions in discussion" :key="`discussion-${discussions}`">
+      <b-card class="border-0">
+        <b>{{ user }}</b>
+        <div>
+          {{ discussions.content }}
+        </div>
       </b-card>
     </b-card-group>
   </div>
@@ -12,6 +15,7 @@
 export default {
   data () {
     return {
+      user: 'User',
       discussion: [],
       error: ''
     }

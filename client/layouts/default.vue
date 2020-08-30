@@ -1,17 +1,13 @@
 <template>
   <div>
-    <Navbar />
     <Nuxt />
   </div>
 </template>
 
 <script>
-import Navbar from '~/components/navbar'
 
 export default {
-  components: {
-    Navbar
-  }
+
 }
 </script>
 
@@ -33,5 +29,9 @@ body,html {
 
 .bg-secondary {
   background-color: rgb(69, 177, 247) !important;
+}
+
+.bg-faded {
+  background-color: rgb(247, 247, 247);
 }
 </style>
