@@ -11,7 +11,7 @@
 
 import { models } from '../../db.js'
 
-const { user } = models
+const { user } = models;
 
 export default (req, res) => {
   const { name, email, password, type } = req.body

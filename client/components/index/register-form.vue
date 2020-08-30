@@ -10,7 +10,7 @@
       </b-form-group>
       <b-form-group>
         <label for="reg-email-input">Email address</label>
-        <input v-model="credentials.email" type="text" class="form-control" placeholder="Enter email">
+        <input v-model="credentials.email" type="email" class="form-control" placeholder="Enter email">
       </b-form-group>
       <b-form-group>
         <label for="reg-password-input">Password</label>

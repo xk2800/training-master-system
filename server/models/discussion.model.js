@@ -9,10 +9,11 @@ export default {
   id: {
     type: DataTypes.BIGINT,
     allowNull: false,
+    autoIncrement: true,
     primaryKey: true
   },
   content: {
-    type: DataTypes.BLOB,
+    type: DataTypes.TEXT,
     allowNull: false
   }
 }
