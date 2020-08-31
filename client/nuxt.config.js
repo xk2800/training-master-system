@@ -1,6 +1,7 @@
+import { port } from './config.js'
 
 export default {
-  mode: 'universal',
+  mode: 'spa',
   target: 'server',
   head: {
     title: process.env.npm_package_name || '',
@@ -14,18 +15,17 @@ export default {
       { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' }
     ]
   },
-  css: [
-  ],
   components: true,
   buildModules: [
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
   ],
   modules: [
     'bootstrap-vue/nuxt',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
   axios: {
-    baseURL: 'http://localhost:8000'
+    baseURL: `http://localhost:${port}`
   },
   build: {
   }

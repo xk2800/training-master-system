@@ -1,5 +1,5 @@
 /**
- * Feedback model
+ * Enrollment model for recording user enrolled course
  */
 
 import sql from 'sequelize'
@@ -12,20 +12,12 @@ export default {
     autoIncrement: true,
     primaryKey: true
   },
-  trainee_id: {
+  user_id: {
     type: DataTypes.BIGINT,
     allowNull: false
   },
   course_id: {
     type: DataTypes.BIGINT,
-    allowNull: false
-  },
-  title: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  },
-  content: {
-    type: DataTypes.TEXT,
     allowNull: false
   }
 }

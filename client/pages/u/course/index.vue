@@ -1,23 +1,24 @@
 <template>
   <b-container class="mt-4">
     <Title class="my-3 bold">
-      List of Courses
+      My Courses
     </Title>
-    <SearchCourse />
+    <CoursePreview />
   </b-container>
 </template>
 
 <script>
-import SearchCourse from '~/components/course/search-course'
+import CoursePreview from '~/components/course/course-preview'
 
 export default {
+  middleware: 'authenticated',
   components: {
-    SearchCourse
+    CoursePreview
   }
 }
 </script>
 
-<style>
+<style scoped>
 body {
   background-color: rgb(247, 247, 247);
 }

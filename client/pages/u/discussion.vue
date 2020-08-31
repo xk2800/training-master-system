@@ -16,6 +16,7 @@ import Navbar from '~/components/navbar'
 import Discussionboard from '~/components/discussion/discussion-board'
 
 export default {
+  middleware: 'authenticated',
   components: {
     Navbar,
     Title,
@@ -24,7 +25,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body {
   background-color: rgb(247, 247, 247);
 }

@@ -15,5 +15,3 @@ dotenv.config({ path: '../.env' });
  */
 
 export const port = process.env.PORT_SERVER
-export const logging = process.env.LOGGING
-export const secret = process.env.SECRET

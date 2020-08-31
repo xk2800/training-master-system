@@ -4,10 +4,11 @@
       <b-nav-item
         v-for="(nav,i) in navs"
         :key="`item-${i}`"
-        :href="`${nav.href}`"
         class="mt-2"
       >
-        {{ nav.nav }}
+        <n-link :to="nav.href">
+          {{ nav.nav }}
+        </n-link>
       </b-nav-item>
     </b-nav>
   </div>
@@ -19,24 +20,16 @@ export default {
     return {
       navs: [
         {
-          nav: 'Auth',
-          href: '/'
-        },
-        {
           nav: 'Discussion',
-          href: '/discussion'
+          href: '/u/discussion'
         },
         {
           nav: 'My Courses',
-          href: '/my-course'
+          href: '/u/course'
         },
         {
           nav: 'Search Course',
-          href: '/search-course'
-        },
-        {
-          nav: 'Course Detail',
-          href: '/course'
+          href: '/u/course/search'
         }
       ]
     }

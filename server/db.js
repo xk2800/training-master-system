@@ -6,7 +6,7 @@ const { Sequelize } = sql
 const model_postfix = '.model.js'
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: '../db/db.sqlite',
+  storage: './db/db.sqlite',
   logging: (logging === 'true') ? console.log : false
 })
 
@@ -20,7 +20,11 @@ fs
     })
     const table_name = file.slice(0, -model_postfix.length)
     sequelize.define(table_name, model, { timestamps: false, tableName: table_name })
-    sequelize.models[table_name].sync()
+
+    sequelize.models[table_name].sync({alter: true}).catch(r => {
+      console.log(`Error when syncing model: ${file}`)
+      console.log(`Reason: ${r}`)
+    })
     console.log(`Imported model: ${table_name}`)
   })
 
@@ -33,4 +37,5 @@ export const databaseConnectTest = async () => {
     console.error('Unable to connect to the database:', error);
   }
 }
+
 export const models = sequelize.models

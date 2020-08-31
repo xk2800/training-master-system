@@ -5,10 +5,10 @@ import body_parser from 'body-parser'
 import { databaseConnectTest } from './db.js'
 import { port } from './config.js'
 
-const server = express()
+const server = express();
 
-const targets = ['post', 'delete', 'get', 'put']
-server.targets = {}
+const targets = ['post', 'delete', 'get', 'put'];
+server.targets = {};
 
 /* Importing all API routes */
 for (const target of targets) {
@@ -24,14 +24,14 @@ for (const target of targets) {
       if (!server.targets[target]) server.targets[target] = {}
       server.targets[target][name] = controller
       console.log(`Imported API: ${target}/${name}`)
-    })
+    });
 }
 
-server.use(body_parser.json())
-server.use(body_parser.urlencoded({ extended: true }))
-server.use(express.urlencoded({ extended: true }))
-server.use(express.json())
-server.use(cors())
+server.use(body_parser.json());
+server.use(body_parser.urlencoded({ extended: true }));
+server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
+server.use(cors());
 
 /* Handling incoming requests */
 server.all('/:param', (req, res) => {
@@ -46,7 +46,7 @@ server.all('/:param', (req, res) => {
   } else {
     res.status(405).send('Unsupported method')
   }
-})
+});
 
 /* Test database connectivity */
 databaseConnectTest()

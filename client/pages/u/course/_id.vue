@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body {
   background-color: rgb(247, 247, 247);
 }

@@ -12,6 +12,10 @@ export default {
     autoIncrement: true,
     primaryKey: true
   },
+  user_id: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+  },
   content: {
     type: DataTypes.TEXT,
     allowNull: false

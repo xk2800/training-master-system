@@ -49,12 +49,13 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      this.$axios.post('http://localhost:8000/user/', {
-        type: this.credentials.type,
-        name: this.credentials.name,
-        email: this.credentials.email,
-        password: this.credentials.password
-      })
+      this.$axios
+        .post('/register', {
+          type: this.credentials.type,
+          name: this.credentials.name,
+          email: this.credentials.email,
+          password: this.credentials.password
+        })
         .then((res) => {
           if (res.data.status === 0) {
             this.makeToast('Success!', 'Account is successfully created', 'success')
