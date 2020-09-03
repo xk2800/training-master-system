@@ -1,11 +1,10 @@
 <template>
   <div>
-    <Navbar />
     <b-container>
       <b-row class="align-self-center vertical-center">
         <b-col lg="6" md="12" class="mx-auto">
           <Title class="text-center my-3 bold">
-            Welcome back, you bitch
+            Welcome back
           </Title>
           <div class="text-center">
             Trainer
@@ -35,13 +34,9 @@
 </template>
 
 <script>
-import Navbar from '~/components/navbar'
 
 export default {
   middleware: 'authenticated',
-  components: {
-    Navbar
-  },
   data () {
     return {
       navs: [

@@ -28,8 +28,12 @@ export default {
     return {
       navs: [
         {
-          nav: 'My Courses',
+          nav: 'Home',
           href: '/u/home'
+        },
+        {
+          nav: 'My Courses',
+          href: '/u/course/mycourse'
         },
         {
           nav: 'Search Courses',

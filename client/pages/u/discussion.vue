@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Navbar />
     <b-container>
       <Title class="text-center my-3 bold">
         Discussion Forum
@@ -12,13 +11,11 @@
 
 <script>
 import Title from '~/components/text/title'
-import Navbar from '~/components/navbar'
 import Discussionboard from '~/components/discussion/discussion-board'
 
 export default {
   middleware: 'authenticated',
   components: {
-    Navbar,
     Title,
     Discussionboard
   }
