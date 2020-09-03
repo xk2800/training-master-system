@@ -1,14 +1,18 @@
 <template>
   <div class="body">
     <div class="background" />
+    <Sidebar />
     <Nuxt />
   </div>
 </template>
 
 <script>
+import Sidebar from '~/components/sidebar'
 
 export default {
-
+  components: {
+    Sidebar
+  }
 }
 </script>
 

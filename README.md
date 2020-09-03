@@ -18,12 +18,15 @@ npm install
 create `.env` file and paste everything from `.env.example`
 
 ### Development
+Running server
+```
+cd server
+npm start
+```
+Running client
 ```
 cd client
 npm run dev
-cd ..
-cd server
-npm start
 ```
 
 
