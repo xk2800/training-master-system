@@ -10,11 +10,13 @@ export default {
     type: DataTypes.BIGINT,
     allowNull: false,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
+    unique: true
   },
   email: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   password: {
     type: DataTypes.TEXT,

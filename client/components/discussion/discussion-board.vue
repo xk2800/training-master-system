@@ -2,11 +2,8 @@
   <b-card class="border-round border-0 shadow-sm">
     <div>
       <b-card-group v-for="(discussion, i) in discussions" :key="`discussion-${i}`">
-        <b-card class="border-0">
-          <b>{{ discussion.name }}</b>
-          <div>
-            {{ discussion.content }}
-          </div>
+        <b-card class="border-0" :sub-title="discussion.name">
+          <b-card-text>{{ discussion.content }}</b-card-text>
         </b-card>
       </b-card-group>
     </div>
