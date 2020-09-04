@@ -15,9 +15,12 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
  
-const { course, user } = models;
+const { course, user, Admin, Trainer } = models;
 
 export default (req, res) => {
+
+  course.belongsTo(Admin);
+  course.belongsTo(Trainer);
 
   const {token, admin_id, trainer_id, title, desc} = req.body
 
@@ -33,7 +36,7 @@ export default (req, res) => {
       get_type(trainer_id, res, (type) => {
         if (type !== 1)  return res.status(200).json({ status: 1 })
         course
-          .create({ admin_id, trainer_id, title, desc })
+          .create({ admin_id, trainer_id, title, desc }, { include: [Admin] })
           .then((model) => {
             if (!model) return res.status(500).json({ status: 2 })
             res.status(200).json({ status: 0 })

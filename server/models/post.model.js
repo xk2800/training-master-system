@@ -17,6 +17,10 @@ export default {
     type: DataTypes.BIGINT,
     allowNull: false
   },
+  trainer_id: {
+    type: DataTypes.BIGINT,
+    allowNull: false
+  },
   title: {
     type: DataTypes.TEXT,
     allowNull: false

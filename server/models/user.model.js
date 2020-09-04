@@ -3,7 +3,9 @@
  */
 
 import sql from 'sequelize';
+
 const { DataTypes } = sql;
+
  
 export default {
   id: {
