@@ -14,7 +14,7 @@ import bcrypt from 'bcrypt';
 
 // Salt can be randomized everytime to make it more secure
 const saltRounds = 10;
-const { user } = models;
+const { user, Trainer, Trainee, Admin } = models;
 
 export default (req, res) => {
   const { name, email, password, type } = req.body
@@ -23,6 +23,10 @@ export default (req, res) => {
     res.status(400).send('invalid input')
     return
   }
+
+  Trainer.belongsTo(user);
+  Trainee.belongsTo(user);
+  Admin.belongsTo(user);
 
   bcrypt.hash(password, saltRounds, (err, hash) => {
 
@@ -48,12 +52,27 @@ export default (req, res) => {
           res.status(200).json({ status: 1 })
           return
         }
+        if(model_user.type == 2)
+          Trainee.create({
+            userId: model_user.id,
+            department: ''
+          },{
+            include:[user]
+          });
+        else if(model_user.type == 1)
+          Trainer.create({
+            userId: model_user.id,
+            title: ''
+          },{
+            include:[user]
+          });
         res.status(200).json({ status: 0 })
       })
       .catch((error) => {
         console.log(error)
         res.status(500).json({ status: 2 })
       })
+      
   });
   
 }

@@ -21,7 +21,7 @@ export default (req, res) => {
     return res.status(200).json({ status: 2 })
   }
    
-  user
+  models.user
     .findOne({ where: { email } })
     .then((model) => {
       if (!model) return res.status(200).json({ status: 1 })
@@ -31,7 +31,8 @@ export default (req, res) => {
         if (result) {
           res.status(200).json({
             status: 0, id,
-            token: jwt.sign({ id, email }, secret)
+            token: jwt.sign({ id, email }, secret),
+            type: model.type
           })
         } else {
           res.status(200).json({ status: 2 })
