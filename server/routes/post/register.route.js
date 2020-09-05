@@ -14,7 +14,7 @@ import bcrypt from 'bcrypt';
 
 // Salt can be randomized everytime to make it more secure
 const saltRounds = 10;
-const { user, Trainer, Trainee } = models;
+const { user, Trainer, Trainee, Admin } = models;
 
 export default (req, res) => {
   const { name, email, password, type } = req.body
@@ -26,6 +26,7 @@ export default (req, res) => {
 
   Trainer.belongsTo(user);
   Trainee.belongsTo(user);
+  Admin.belongsTo(user);
 
   bcrypt.hash(password, saltRounds, (err, hash) => {
 

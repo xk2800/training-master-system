@@ -23,7 +23,7 @@ export default (req, res) => {
     return
   }
 
-  post.belongsTo(Trainer);
+  post.belongsTo(Trainer, {foreignKey: 'trainer_id'});
 
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })

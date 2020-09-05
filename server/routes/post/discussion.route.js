@@ -21,7 +21,7 @@ export default (req, res) => {
     return
   }
 
-  discussion.belongsTo(user);
+  discussion.belongsTo(user, {foreignKey: 'user_id'});
 
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })

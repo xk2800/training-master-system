@@ -17,8 +17,8 @@ const { feedback, Trainee, course } = models;
 
 export default (req, res) => {
 
-  feedback.belongsTo(Trainee);
-  feedback.belongsTo(course);
+  feedback.belongsTo(Trainee, {foreignKey: 'trainee_id'});
+  feedback.belongsTo(course, {foreignKey: 'course_id'});
 
   const { token, course_id, trainee_id, title, desc } = req.body;
   if(!token || trainee_id === undefined || course_id === undefined || !title || !desc) {

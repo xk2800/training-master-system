@@ -1,7 +1,8 @@
 export const state = () => ({
   authenticated: false,
   token: null,
-  id: null
+  id: null,
+  type: -1
 })
 
 export const mutations = {
@@ -9,5 +10,6 @@ export const mutations = {
     state.id = data.id
     state.token = data.token
     state.authenticated = true
+    state.type = data.type
   }
 }
