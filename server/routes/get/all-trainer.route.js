@@ -17,7 +17,7 @@ const { user } = models;
 
 export default (req, res) => {
 
-  const { token } = req.query
+  const { token, user_id } = req.query
 
   if (!token || user_id === undefined) {
     return res.status(400).send('invalid usage')

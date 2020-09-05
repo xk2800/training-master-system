@@ -25,7 +25,7 @@ export default {
     allowNull: false
   },
   desc: {
-    type: DataTypes.BLOB,
+    type: DataTypes.TEXT,
     allowNull: false
   }
 }
