@@ -62,6 +62,7 @@ export default (req, res) => {
         else if(model_user.type == 1)
           Trainer.create({
             userId: model_user.id,
+            name: model_user.name,
             title: ''
           },{
             include:[user]

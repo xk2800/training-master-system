@@ -9,28 +9,53 @@
 
 import { models } from '../../db.js'
 
-const { user } = models;
+const { user, Trainer } = models;
 
 export default (req, res) => {
 
-  const { id } = req.query;
+  const { id, trainer_id } = req.query;
   
-  if (id === undefined) {
+  if (id === undefined && trainer_id === undefined) {
     res.status(400).send('invalid usage')
     return
   }
 
-  user
-    .findOne({
-      where: { id }
-    })
-    .then((model) => {
-      if (!model) return res.status(200).json({ status: 1 })
-      return res.status(200).json({ status: 0, name: model.name })
-    })
-    .catch((error) => {
-      console.log(error)
-      return res.status(500).json({ status: 2 })
-    })
+  if(id !== undefined)
+    user
+      .findOne({
+        where: { id }
+      })
+      .then((model) => {
+        if (!model) return res.status(200).json({ status: 1 })
+        return res.status(200).json({ status: 0, name: model.name })
+      })
+      .catch((error) => {
+        console.log(error)
+        return res.status(500).json({ status: 2 })
+      })
+  else if(trainer_id !== undefined)
+    Trainer
+      .findOne({
+        where: { id: trainer_id }
+      })
+      .then((model) => {
+        if (!model) return res.status(200).json({ status: 1 })
+        user
+          .findOne({
+            where: { id: model.userId }
+          })
+          .then((model) => {
+            if (!model) return res.status(200).json({ status: 1 })
+            return res.status(200).json({ status: 0, name: model.name })
+          })
+          .catch((error) => {
+            console.log(error)
+            return res.status(500).json({ status: 2 })
+          })
+      })
+      .catch((error) => {
+        console.log(error)
+        return res.status(500).json({ status: 2 })
+      })
 
 }

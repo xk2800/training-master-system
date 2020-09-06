@@ -56,8 +56,13 @@ export default (req, res) => {
                 })
                 .catch((error) => { 
                   console.log(error)
+                  console.log("hi")
                   res.status(500).json({ status: 2 })
                 })
+              })
+              .catch(err => {
+                console.log(error)
+                res.status(500).json({ status: 2 })
               })
           })
         })

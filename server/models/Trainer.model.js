@@ -17,6 +17,10 @@ export default {
     type: DataTypes.BIGINT,
     allowNull: false
   },
+  name: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
   title: {
     type: DataTypes.TEXT
   }
