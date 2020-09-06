@@ -33,8 +33,8 @@ export default (req, res) => {
       .then((models) => {
         const discussions = []
         for (const model of models) {
-          const { user_id, content } = model
-          discussions.push({ user_id, content })
+          const { id, user_id, content } = model
+          discussions.push({ id, user_id, content })
         }
         res.status(200).json({ status: 0, discussions })
       })
