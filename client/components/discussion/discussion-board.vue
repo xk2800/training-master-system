@@ -10,7 +10,7 @@
               size="sm"
               class="float-right"
               variant="outline-danger"
-              @click="onDelete(i)"
+              @click="onDelete(discussion.id)"
             >
               Delete
             </b-button>
