@@ -1,11 +1,9 @@
 /**
- * User model
+ * User model - Trainer
  */
 
 import sql from 'sequelize';
-
 const { DataTypes } = sql;
-
  
 export default {
   id: {
@@ -15,21 +13,15 @@ export default {
     primaryKey: true,
     unique: true
   },
-  email: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
-  },
-  password: {
-    type: DataTypes.TEXT,
+  userId: {
+    type: DataTypes.BIGINT,
     allowNull: false
   },
   name: {
     type: DataTypes.TEXT,
     allowNull: false
   },
-  type: {
-    type: DataTypes.INTEGER,
-    allowNull: false
+  title: {
+    type: DataTypes.TEXT
   }
-};
+}

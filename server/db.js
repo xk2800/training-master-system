@@ -21,7 +21,11 @@ fs
     const table_name = file.slice(0, -model_postfix.length)
     sequelize.define(table_name, model, { timestamps: false, tableName: table_name })
 
+<<<<<<< HEAD
     sequelize.models[table_name].sync({force: true}).catch(r => {
+=======
+    sequelize.models[table_name].sync({}).catch(r => {
+>>>>>>> 12482db156fb99b0f29c878bd7e1eda5be14fb91
       console.log(`Error when syncing model: ${file}`)
       console.log(`Reason: ${r}`)
     })

@@ -17,15 +17,15 @@ const { user } = models;
 
 export default (req, res) => {
 
-  const { token } = req.query
+  const { token, user_id } = req.query
 
-  if (!token || admin_id === undefined) {
+  if (!token || user_id === undefined) {
     return res.status(400).send('invalid usage')
   }
-
+  
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    get_type(admin_id, res, (type) => {
+    get_type(user_id, res, (type) => {
       if (type !== 0) return res.status(200).send({ status: 1 })
       user
         .findAll({ where: { type: 1 } })

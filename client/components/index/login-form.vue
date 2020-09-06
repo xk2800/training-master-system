@@ -39,7 +39,7 @@ export default {
         .then((res) => {
           // action after successfully login
           if (res.data.status === 0) {
-            this.$store.commit('session/auth', { id: res.data.id, token: res.data.token })
+            this.$store.commit('session/auth', { id: res.data.id, token: res.data.token, type: res.data.type })
             this.makeToast('Logged in!', 'Welcome back to Training Master System!', 'success')
             this.$router.push('/u/home')
           } else if (res.data.status === 1 || res.data.status === 2) {

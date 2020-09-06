@@ -11,7 +11,7 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { discussion } = models;
+const { discussion, user } = models;
 
 export default (req, res) => {
   const { token, user_id, content } = req.body
@@ -21,10 +21,12 @@ export default (req, res) => {
     return
   }
 
+  discussion.belongsTo(user, {foreignKey: 'user_id'});
+
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
     discussion
-      .create({ user_id, content })
+      .create({ user_id, content }, { include: [user] })
       .then((model) => {
         if (!model) return res.status(200).json({ status: 1 })
         res.status(200).json({ status: 0 })

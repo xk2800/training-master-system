@@ -2,11 +2,19 @@
   <b-card class="border-round border-0 shadow-sm">
     <div>
       <b-card-group v-for="(discussion, i) in discussions" :key="`discussion-${i}`">
-        <b-card class="border-0">
-          <b>{{ discussion.name }}</b>
-          <div>
+        <b-card class="border-0" :sub-title="discussion.name">
+          <b-card-text>
             {{ discussion.content }}
-          </div>
+            <b-button
+              v-if="curruser === discussion.user_id"
+              size="sm"
+              class="float-right"
+              variant="outline-danger"
+              @click="onDelete(i)"
+            >
+              Delete
+            </b-button>
+          </b-card-text>
         </b-card>
       </b-card-group>
     </div>
@@ -37,7 +45,8 @@ export default {
     return {
       nameMap: new Map(),
       discussions: [],
-      content: ''
+      content: '',
+      curruser: this.$store.state.session.id
     }
   },
   created () {
@@ -103,6 +112,26 @@ export default {
         autoHideDelay: 2500,
         appendToast: true
       })
+    },
+    onDelete (i) {
+      this.$axios
+        .delete('/discussion', {
+          params: {
+            token: this.$store.state.session.token,
+            id: i
+          }
+        })
+        .then((res) => {
+          if (res.data.status === 0) {
+            this.makeToast('Success!', 'Discussion successfully deleted', 'success')
+            this.loadContent(0)
+          } else if (res.data.status === 1) {
+            this.makeToast('Failed!', 'Message could\'t be sent', 'warning')
+          }
+        })
+        .catch((error) => {
+          this.makeToast('Internal Error', error, 'danger')
+        })
     }
   }
 }

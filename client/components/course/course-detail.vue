@@ -1,21 +1,35 @@
 <template>
   <div>
     <b-card class="border-round border-0 shadow-sm mt-3">
-      <b-card-title>{{ courseTitle }}</b-card-title>
-      <b-card-sub-title>{{ courseTrainer }}</b-card-sub-title>
+      <b-card-sub-title>{{ selectedCourse.name }}</b-card-sub-title>
       <b-card-text class="mt-2">
-        {{ courseDesc }}
+        {{ selectedCourse.desc }}
       </b-card-text>
-      <b-button variant="outline-success" href="#">
-        Enroll Course
-      </b-button>
-      <b-button variant="outline-danger" href="#">
-        Drop Course
-      </b-button>
-      <div class="mt-2">
-        <b-button v-b-modal="feedback" variant="outline-primary">
-          Submit a feedback
+      <div v-if="this.$store.state.session.type === 2">
+        <b-button variant="outline-success" href="#">
+          Enroll Course
         </b-button>
+        <b-button variant="outline-danger" href="#">
+          Drop Course
+        </b-button>
+        <div class="mt-2">
+          <b-button v-b-modal="feedback" variant="outline-primary">
+            Submit a feedback
+          </b-button>
+        </div>
+      </div>
+      <div v-else-if="this.$store.state.session.type === 1 && selectedCourse.trainer_id === id">
+        <b-button variant="outline-success" href="#">
+          Manage Material
+        </b-button>
+        <b-button variant="outline-danger" href="#">
+          Drop Course
+        </b-button>
+        <div class="mt-2">
+          <b-button v-b-modal="feedback" variant="outline-primary">
+            Submit a feedback
+          </b-button>
+        </div>
       </div>
     </b-card>
     <b-modal :id="feedback" title="Submit a feedback" :hide-header="true" :hide-footer="true">
@@ -31,11 +45,48 @@ export default {
   components: {
     Feedbackboard
   },
+  props: {
+    selectedCourse: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
-      courseTitle: 'Course 1',
-      courseTrainer: 'Trainer 1',
-      courseDesc: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.'
+      id: null
+    }
+  },
+  mounted () {
+    this.getTrainerId()
+  },
+  methods: {
+    getTrainerId () {
+      this.$axios
+        .get('/trainer', {
+          params: {
+            token: this.$store.state.session.token,
+            id: this.$store.state.session.id
+          }
+        })
+        .then((res) => {
+          if (res.data.status === 0) {
+            this.id = res.data.id
+            console.log(this.id)
+          } else if (res.data.status === 1) {
+            this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
+          }
+        })
+        .catch((error) => {
+          this.makeToast('Cannot get message!', error, 'danger')
+        })
+    },
+    makeToast (title, message, variant) {
+      this.$bvToast.toast(message, {
+        title,
+        variant,
+        autoHideDelay: 2500,
+        appendToast: true
+      })
     }
   }
 }
