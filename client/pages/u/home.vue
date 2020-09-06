@@ -18,7 +18,7 @@
           lg="4"
         >
           <n-link class="text-decoration-none" :to="nav.href">
-            <b-card class="border-0 border-round shadow-sm">
+            <b-card class="border-0 border-round shadow-sm mt-2">
               <b-card-title class="text-center">
                 {{ nav.title }}
               </b-card-title>
@@ -43,7 +43,7 @@ export default {
         {
           title: 'My Courses',
           image: 'mycourse.png',
-          href: '/u/course'
+          href: '/u/course/mycourse'
         },
         {
           title: 'Discussion',

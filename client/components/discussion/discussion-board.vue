@@ -49,7 +49,7 @@ export default {
         .get('/discussion', {
           params: {
             token: this.$store.state.session.token,
-            limit: 20,
+            limit: 7,
             offset
           }
         })
