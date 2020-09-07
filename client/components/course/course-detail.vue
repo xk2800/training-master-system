@@ -18,7 +18,7 @@
           </b-button>
         </div>
       </div>
-      <div v-else-if="this.$store.state.session.type === 1 && selectedCourse.trainer_id === id">
+      <div v-else-if="this.$store.state.session.type === 1 && selectedCourse.trainer_id === trainerId">
         <b-button variant="outline-success" href="#">
           Manage Material
         </b-button>
@@ -30,6 +30,14 @@
             Submit a feedback
           </b-button>
         </div>
+      </div>
+      <div v-else-if="this.$store.state.session.type === 0 && selectedCourse.admin_id === adminId">
+        <b-button variant="outline-success" href="#">
+          Update Course
+        </b-button>
+        <b-button variant="outline-danger" href="#">
+          Delete Course
+        </b-button>
       </div>
     </b-card>
     <b-modal :id="feedback" title="Submit a feedback" :hide-header="true" :hide-footer="true">
@@ -53,32 +61,55 @@ export default {
   },
   data () {
     return {
-      id: null
+      trainerId: null,
+      adminId: null
     }
   },
   mounted () {
     this.getTrainerId()
+    this.getAdminId()
   },
   methods: {
     getTrainerId () {
-      this.$axios
-        .get('/trainer', {
-          params: {
-            token: this.$store.state.session.token,
-            id: this.$store.state.session.id
-          }
-        })
-        .then((res) => {
-          if (res.data.status === 0) {
-            this.id = res.data.id
-            console.log(this.id)
-          } else if (res.data.status === 1) {
-            this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
-          }
-        })
-        .catch((error) => {
-          this.makeToast('Cannot get message!', error, 'danger')
-        })
+      if (this.$store.state.session.type === 1) {
+        this.$axios
+          .get('/trainer', {
+            params: {
+              token: this.$store.state.session.token,
+              id: this.$store.state.session.id
+            }
+          })
+          .then((res) => {
+            if (res.data.status === 0) {
+              this.trainerId = res.data.id
+            } else if (res.data.status === 1) {
+            }
+          })
+          .catch((error) => {
+            this.makeToast('Cannot get message!', error, 'danger')
+          })
+      }
+    },
+    getAdminId () {
+      if (this.$store.state.session.type === 0) {
+        this.$axios
+          .get('/admin', {
+            params: {
+              token: this.$store.state.session.token,
+              id: this.$store.state.session.id
+            }
+          })
+          .then((res) => {
+            if (res.data.status === 0) {
+              this.adminId = res.data.id
+              console.log(this.adminId)
+            } else if (res.data.status === 1) {
+            }
+          })
+          .catch((error) => {
+            this.makeToast('Cannot get message!', error, 'danger')
+          })
+      }
     },
     makeToast (title, message, variant) {
       this.$bvToast.toast(message, {

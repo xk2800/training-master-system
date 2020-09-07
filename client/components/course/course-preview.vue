@@ -56,8 +56,10 @@ export default {
               const id = course.trainer_id
               if (!this.nameMap.has(id)) {
                 const { data } = await this.$axios.get('/name', { params: { trainer_id: id } })
-                const name = data.name
-                this.nameMap.set(id, name)
+                if (data.name) {
+                  const name = data.name
+                  this.nameMap.set(id, name)
+                }
               }
               course.name = this.nameMap.get(id)
             })

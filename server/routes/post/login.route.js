@@ -31,7 +31,7 @@ export default (req, res) => {
         if (result) {
           res.status(200).json({
             status: 0, id,
-            token: jwt.sign({ id, email }, secret),
+            token: jwt.sign({ id, email }, secret, { expiresIn: '12h'}),
             type: model.type
           })
         } else {
