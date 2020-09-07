@@ -5,6 +5,7 @@
  *   - token: access token
  * response:
  *   - trainer_id: the trainer who associated with the course
+ *   - admin_id: the admin who create the course
  *   - title: title of the course
  *   - desc: course description
  *   - status: 0 = success, 1 = access denied, 2 = error occurs
@@ -29,8 +30,8 @@ export default (req, res) => {
       .findOne({ where: { id: course_id } })
       .then((model) => {
         if (!model) return res.status(200).json({ status: 1 })
-        const { trainer_id, title, desc } = model
-        res.status(200).json({ status: 0, trainer_id, title, desc })
+        const { trainer_id, admin_id, title, desc } = model
+        res.status(200).json({ status: 0, admin_id, trainer_id, title, desc })
       })
       .catch((error) => { 
         console.log(error)
