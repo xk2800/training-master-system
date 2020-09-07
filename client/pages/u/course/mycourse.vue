@@ -3,11 +3,10 @@
     <Title class="my-3 bold">
       My Courses
     </Title>
-    <CoursePreview />
-    <b-button v-if="this.$store.state.session.type === 0" v-b-modal.addCourse variant="outline-primary" class="mt-2">
+    <b-button v-if="this.$store.state.session.type === 0" v-b-modal.addCourse variant="outline-primary" class="mt-1 mr-2">
       Add Course
     </b-button>
-
+    <CoursePreview />
     <b-modal id="addCourse" title="Add Course" hide-footer>
       <addCourse />
     </b-modal>
