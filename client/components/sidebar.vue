@@ -2,10 +2,8 @@
   <div>
     <b-button v-b-toggle.sidebar-variant class="mt-3 ml-3"><i class="fa fa-bars mr-3" />Navigation</b-button>
     <b-sidebar id="sidebar-variant" title="Training Master System" bg-variant="dark" text-variant="light" shadow>
-      <div class="px-3 py-2">
-        <b-card class="mb-3">
-          <b-img src="/profile.png" fluid></b-img>
-        </b-card>
+      <div class="px-3 py-2 text-center">
+        <b-img src="/profile.png" class="mb-3" fluid></b-img>
         <b-button
           v-for="(nav,i) in navs"
           :key="`item-${i}`"

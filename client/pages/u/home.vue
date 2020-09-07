@@ -13,6 +13,7 @@
           v-for="(nav, i) in navs"
           :key="`nav${i}`"
           lg="4"
+          sm="10"
         >
           <n-link class="text-decoration-none" :to="nav.href">
             <b-card class="border-0 border-round shadow-sm mt-2">

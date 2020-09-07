@@ -1,14 +1,9 @@
 <template>
   <b-container class="mt-4">
+    <ProfileBoard />
     <Title class="my-3 bold">
       My Courses
     </Title>
-<<<<<<< HEAD
-    <b-button v-if="this.$store.state.session.type === 0" v-b-modal.addCourse variant="outline-primary" class="mt-1 mr-2">
-      Add Course
-    </b-button>
-    <CoursePreview />
-=======
     <CoursePreview />
     <div v-if="this.$store.state.session.type === 0">
       <b-button v-b-modal.addCourse variant="outline-primary" class="mt-2">
@@ -19,7 +14,6 @@
       </b-button>
     </div>
 
->>>>>>> 66c2b9e4dc8988100e6ad2110b7768e628f5f578
     <b-modal id="addCourse" title="Add Course" hide-footer>
       <addCourse />
     </b-modal>
@@ -29,12 +23,14 @@
 <script>
 import CoursePreview from '~/components/course/course-preview'
 import addCourse from '~/components/course/create-course'
+import ProfileBoard from '~/components/profile/profile-board'
 
 export default {
   middleware: 'authenticated',
   components: {
     CoursePreview,
-    addCourse
+    addCourse,
+    ProfileBoard
   },
   data () {
     return {
@@ -96,4 +92,5 @@ export default {
 body {
   background-color: rgb(247, 247, 247);
 }
+
 </style>
