@@ -73,7 +73,6 @@ export default {
             this.id = res.data.id
             console.log(this.id)
           } else if (res.data.status === 1) {
-            this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
           }
         })
         .catch((error) => {

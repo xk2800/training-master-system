@@ -32,13 +32,11 @@ export default (req, res) => {
         for (const model of models) {
           const { trainer_id, title, desc } = model
           courses.push({ trainer_id, title, desc })
-          console.log(title)
         }
         res.status(200).json({ status: 0, courses })
       })
       .catch((error) => { 
         console.log(error)
-        console.log(token)
         res.status(500).json({ status: 2 })
       })
   })

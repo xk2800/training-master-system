@@ -104,6 +104,7 @@ export default {
         .then((res) => {
           if (res.data.status === 0) {
             this.makeToast('Success!', 'Course successfully created', 'success')
+            window.location.reload(true)
           } else if (res.data.status === 1) {
             this.makeToast('Failed!', 'Message couldn\'t be sent', 'warning')
           }
