@@ -32,10 +32,10 @@
         </div>
       </div>
       <div v-else-if="this.$store.state.session.type === 0 && selectedCourse.admin_id === adminId">
-        <b-button variant="outline-success" href="#">
+        <b-button variant="outline-success" @click="$bvModal.show('updateCourse')">
           Update Course
         </b-button>
-        <b-button variant="outline-danger" href="#">
+        <b-button variant="outline-danger" @click="deleteCourse()">
           Delete Course
         </b-button>
       </div>
@@ -43,15 +43,20 @@
     <b-modal :id="feedback" title="Submit a feedback" :hide-header="true" :hide-footer="true">
       <Feedbackboard />
     </b-modal>
+    <b-modal id="updateCourse" title="Update Course" centered hide-footer>
+      <CourseUpdate :selected-course="selectedCourse" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import Feedbackboard from '~/components/feedback/feedback-board'
+import CourseUpdate from '~/components/course/course-update'
 
 export default {
   components: {
-    Feedbackboard
+    Feedbackboard,
+    CourseUpdate
   },
   props: {
     selectedCourse: {
@@ -102,7 +107,6 @@ export default {
           .then((res) => {
             if (res.data.status === 0) {
               this.adminId = res.data.id
-              console.log(this.adminId)
             } else if (res.data.status === 1) {
             }
           })
@@ -110,6 +114,23 @@ export default {
             this.makeToast('Cannot get message!', error, 'danger')
           })
       }
+    },
+    deleteCourse () {
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to delete this course.', {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {})
+        .catch((err) => {
+          console.log(err)
+        })
     },
     makeToast (title, message, variant) {
       this.$bvToast.toast(message, {
