@@ -25,10 +25,10 @@ export default (req, res) => {
       .findOne({ where: { id } })
       .then((model) => {
         if (!model) return res.status(200).json({ status: 1 })
-        const { email, name, type } = model
+        const { email, name, type, password } = model
         res.status(200).json({
           status: 0,
-          email, name, type
+          email, name, type, password
         })
       })
       .catch((error) => {
