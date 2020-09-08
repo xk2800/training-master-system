@@ -9,7 +9,7 @@
           <p><b>Name:</b> {{ name }}</p>
           <p><b>Email:</b> {{ email }}</p>
           <p><b>User type:</b> {{ (type == 1) ? 'Trainee' : (type == 2) ? 'Trainer' : 'Administrator' }}</p>
-          <b-button variant="outline-primary" @click="foo=!foo">Update</b-button>
+          <b-button variant="outline-primary" @click="foo = !foo">Update</b-button>
         </b-col>
         <b-col v-if="foo" cols="9" class="py-lg-5">
           <p><b>Name:</b><b-form-input type="name" v-model="newname" :placeholder="name" /></p>
@@ -18,7 +18,7 @@
           <p><b>Current password:</b><b-form-input type="password" v-model="prevpassword" placeholder="Current password" /></p>
           <p><b>New password:</b><b-form-input type="password" v-model="newpassword" placeholder="New password" /></p>
           <b-button v-if="foo == true" variant="outline-primary" @click="onUpdate">Confirm</b-button>
-          <b-button v-if="foo == true" variant="outline-danger" @click="foo=!foo">Cancel</b-button>
+          <b-button v-if="foo == true" variant="outline-danger" @click="onReset">Cancel</b-button>
         </b-col>
       </b-row>
     </div>
@@ -36,6 +36,7 @@ export default {
       newname: '',
       newemail: '',
       prevpassword: '',
+      pwdState: null,
       newpassword: '',
       foo: false
     }
@@ -66,7 +67,14 @@ export default {
           this.makeToast('Cannot get message!', error, 'danger')
         })
     },
-    onUpdate (evt) {
+    onReset () {
+      this.newname = ''
+      this.newemail = ''
+      this.prevpassword = ''
+      this.newpassword = ''
+      this.foo = !this.foo
+    },
+    onUpdate () {
       this.$axios
         .put('/user', {
           token: this.$store.state.session.token,

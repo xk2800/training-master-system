@@ -5,9 +5,10 @@
  *   - id: the user who requested to update profile
  *   - email: new email of the user
  *   - name: new user name
- *   - password: new user password
+ *   - ppassword: user's current password or refer as previous password
+ *   - npassword: password that user wanted to change to or refer as new password
  * response:
- *   - status: 0 = success, 1 = update failed, 2 = internal error
+ *   - status: 0 = success, 1 = access denied, 2 = internal error
  */
 
 import verifier from '../../utils/token-verifier.js'
@@ -20,36 +21,16 @@ export default (req, res) => {
   const saltRounds = 10;
   const {token, id, email, name, ppassword, npassword} = req.body
 
-  if(!token || id === undefined || !email || !name || !ppassword || !npassword) {
+  if (!token || id === undefined || !email || !name) {
     res.status(400).send('invalid input')
     return
   }
-  let password = ''
-  verifier(token, (valid) => {
-    if (!valid) return res.status(200).json({ status: 1 })
-    user
-      .findByPk(id)
-      .then((model) => {
-        if (!model) return res.status(200).json({ status: 1 })
-        password = model
-      })
-      .catch((error) => {
-        console.log(error)
-        return res.status(500).json({ status: 2 })
-      })
-    if (bcrypt.compare(ppassword, password)) {
-      bcrypt.hash(npassword, saltRounds, (err, hash) => {
-
-        if(err) {
-          return res.status(500).json({
-            type: 'error',
-            message: 'Bcrypt failed'
-          });
-        }
-
-        user
+  if (!ppassword || !npassword) {
+    verifier(token, (valid) => {
+      if (!valid) return res.status(200).json({ status: 1 })
+      user
         .update(
-          { email, name, password: hash },
+          { email, name },
           { where: { id } }
         )
         .then(([affected_row, _]) => {
@@ -60,11 +41,54 @@ export default (req, res) => {
           console.log(error)
           res.status(500).json({ status: 2 })
         })
-      });
-    }
-    else {
-      res.status(400).send('Wrong password')
-    }
-  })
+      })
+  }
+  else {
+    let password = ''
+    verifier(token, (valid) => {
+      if (!valid) return res.status(200).json({ status: 1 })
+      user
+        .findByPk(id)
+        .then((model) => {
+          if (!model) return res.status(200).json({ status: 1 })
+          bcrypt.compare(ppassword, model.password, function(error, isMatch) {
+            if (error) return res.status(500).json({ status: 2 })
+            if (!isMatch) {
+              console.log('Incorrect password')
+              res.status(400).send('Incorrect password')
+              return
+            }
+            console.log('correct password')
+            bcrypt.hash(npassword, saltRounds, (err, hash) => {
+    
+              if(err) {
+                return res.status(500).json({
+                  type: 'error',
+                  message: 'Bcrypt failed'
+                });
+              }
+    
+              user
+              .update(
+                { email, name, password: hash },
+                { where: { id } }
+              )
+              .then(([affected_row, _]) => {
+                if (affected_row <= 0) return res.status(500).json({ status: 1 })
+                res.status(200).json({ status: 0 })
+              })
+              .catch((error) => {
+                console.log(error)
+                res.status(500).json({ status: 2 })
+              })
+            });
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+          return res.status(500).json({ status: 2 })
+        })
+    })
+  }
 }
 
