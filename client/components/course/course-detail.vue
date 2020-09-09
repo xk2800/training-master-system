@@ -13,7 +13,7 @@
           Drop Course
         </b-button>
         <div class="mt-2">
-          <b-button v-b-modal="feedback" variant="outline-primary">
+          <b-button variant="outline-primary" @click="$bvModal.show('feedback')">
             Submit a feedback
           </b-button>
         </div>
@@ -22,14 +22,9 @@
         <b-button variant="outline-success" href="#">
           Manage Material
         </b-button>
-        <b-button variant="outline-danger" href="#">
-          Drop Course
+        <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
+          View Feedback
         </b-button>
-        <div class="mt-2">
-          <b-button v-b-modal="feedback" variant="outline-primary">
-            Submit a feedback
-          </b-button>
-        </div>
       </div>
       <div v-else-if="this.$store.state.session.type === 0 && selectedCourse.admin_id === adminId">
         <b-button variant="outline-success" @click="$bvModal.show('updateCourse')">
@@ -38,25 +33,33 @@
         <b-button variant="outline-danger" @click="deleteCourse()">
           Delete Course
         </b-button>
+        <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
+          View Feedback
+        </b-button>
       </div>
     </b-card>
-    <b-modal :id="feedback" title="Submit a feedback" :hide-header="true" :hide-footer="true">
-      <Feedbackboard />
+    <b-modal id="feedback" title="Submit a feedback" hide-footer>
+      <FeedbackSubmit :course="selectedCourse" />
     </b-modal>
     <b-modal id="updateCourse" title="Update Course" centered hide-footer>
       <CourseUpdate :selected-course="selectedCourse" />
+    </b-modal>
+    <b-modal id="feedbackBoard" title="Feedback List" hide-footer>
+      <FeedbackBoard :course="selectedCourse" />
     </b-modal>
   </div>
 </template>
 
 <script>
-import Feedbackboard from '~/components/feedback/feedback-board'
+import FeedbackSubmit from '~/components/feedback/feedback-submit'
 import CourseUpdate from '~/components/course/course-update'
+import FeedbackBoard from '~/components/feedback/feedback-board'
 
 export default {
   components: {
-    Feedbackboard,
-    CourseUpdate
+    FeedbackBoard,
+    CourseUpdate,
+    FeedbackSubmit
   },
   props: {
     selectedCourse: {

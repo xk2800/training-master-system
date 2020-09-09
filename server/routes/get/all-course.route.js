@@ -4,6 +4,7 @@
  *   - token: access token
  * response:
  *   - courses:
+ *     - id: the course id
  *     - trainer_id: the trainer who associated with the course
  *     - admin_id: the admin who created the course
  *     - title: title of the course
@@ -31,8 +32,8 @@ export default (req, res) => {
       .then((models) => {
         const courses = []
         for (const model of models) {
-          const { trainer_id, admin_id, title, desc } = model
-          courses.push({ trainer_id, admin_id, title, desc })
+          const { id, trainer_id, admin_id, title, desc } = model
+          courses.push({ id, trainer_id, admin_id, title, desc })
         }
         res.status(200).json({ status: 0, courses })
       })
