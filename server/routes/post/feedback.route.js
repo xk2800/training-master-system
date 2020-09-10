@@ -20,7 +20,7 @@ export default (req, res) => {
   feedback.belongsTo(Trainee, {foreignKey: 'trainee_id', onDelete: 'cascade'});
   feedback.belongsTo(course, {foreignKey: 'course_id', onDelete: 'cascade'});
   course.hasMany(feedback, {foreignKey: 'course_id', onDelete: 'cascade'});
-  Trainee.hasMany(feedback, {foreignKey: 'trainer_id', onDelete: 'cascade'});
+  Trainee.hasMany(feedback, {foreignKey: 'trainee_id', onDelete: 'cascade'});
 
   const { token, course_id, trainee_id, title, content } = req.body;
   if(!token || trainee_id === undefined || course_id === undefined || !title || !content) {
