@@ -14,7 +14,7 @@
         </b-button>
         <div class="mt-2">
           <b-button variant="outline-primary" @click="$bvModal.show('feedback')">
-            Submit a feedback
+            My feedback
           </b-button>
         </div>
       </div>
@@ -38,7 +38,7 @@
         </b-button>
       </div>
     </b-card>
-    <b-modal id="feedback" title="Submit a feedback" hide-footer>
+    <b-modal id="feedback" hide-header hide-footer>
       <FeedbackSubmit :course="selectedCourse" />
     </b-modal>
     <b-modal id="updateCourse" title="Update Course" centered hide-footer>

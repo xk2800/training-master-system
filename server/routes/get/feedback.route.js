@@ -14,7 +14,7 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js';
 
-const { feedback, user, Trainer, course } = models;
+const { feedback, user, Trainer, course, Trainee } = models;
 
 export default (req, res) => {
 
@@ -42,6 +42,9 @@ export default (req, res) => {
       } 
       else if (type === 1) {
         check_trainer(user_id, course_id, res)
+      }
+      else{
+        check_trainee(user_id, course_id, res)
       }
     })
   })
@@ -75,7 +78,30 @@ export default (req, res) => {
           })
           .catch((error) => { error_handle(error, res) })
       })
-    
+  }
+
+  const check_trainee = (user_id, course_id, res) => {
+    Trainee
+      .findOne({ where: { userId: user_id } })
+      .then(trainee => {
+        feedback
+          .findAll({ where: { trainee_id: trainee.id, course_id } })
+          .then((models) => {
+            if (!models) return res.status(200).send({ status: 1 })
+            const feedbacks = []
+            for (const model of models) {
+              const { title, content } = model
+              feedbacks.push({ title, content })
+            }
+            res.status(200).send({ status: 0, feedbacks })
+          })
+          .catch(err => {
+            error_handle(err, res)
+          })
+      })
+      .catch(err => {
+        error_handle(err, res)
+      })
   }
 
   const error_handle = (error, res) => {
