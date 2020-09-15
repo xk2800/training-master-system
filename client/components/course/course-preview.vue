@@ -74,7 +74,6 @@ export default {
     selectedCourse (course, i) {
       this.currentCourse = course
       this.currentIndex = i
-      console.log(this.currentCourse)
     },
     makeToast (title, message, variant) {
       this.$bvToast.toast(message, {

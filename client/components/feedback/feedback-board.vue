@@ -1,69 +1,64 @@
 <template>
-  <b-form @submit="onSubmit">
-    <b-form-group
-      label="Title: "
-      label-for="title1"
-    >
-      <b-form-input
-        v-model="form.title"
-        type="text"
-        required
-        placeholder="Enter your title"
-      ></b-form-input>
-    </b-form-group>
-    <b-form-group
-      class="mt-4"
-      label="Desciption"
-    >
-      <b-form-textarea
-        v-model="form.content"
-        type="text"
-        class="form-control"
-        placeholder="Enter your description"
-        rows="1"
-      />
-    </b-form-group>
-    <b-row class="justify-content-center mt-4">
-      <button type="submit" class="btn btn-primary">
-        Submit
-      </button>
-    </b-row>
-  </b-form>
+  <b-card class="border-round border-0 shadow-sm">
+    <div>
+      <b-card-group v-for="(feedback, i) in feedbacks" :key="`feedback-${i}`">
+        <b-card class="border-0" :title="feedback.title" :sub-title="feedback.name">
+          <b-card-text>
+            {{ feedback.content }}
+          </b-card-text>
+        </b-card>
+      </b-card-group>
+    </div>
+  </b-card>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      form: {
-        title: '',
-        content: ''
-      }
+  props: {
+    course: {
+      type: Object,
+      default: null
     }
   },
+  data () {
+    return {
+      nameMap: new Map(),
+      feedbacks: []
+    }
+  },
+  created () {
+    this.loadContent(0)
+  },
   methods: {
-    onSubmit (evt) {
-      evt.preventDefault()
+    loadContent (offset) {
       this.$axios
-        .post('/feedback', {
-          token: this.$store.state.session.token,
-          user_id: this.$store.state.session.id,
-          title: this.form.title,
-          content: this.form.content
+        .get('/feedback', {
+          params: {
+            token: this.$store.state.session.token,
+            user_id: this.$store.state.session.id,
+            course_id: this.course.id,
+            limit: 7,
+            offset
+          }
         })
         .then((res) => {
           if (res.data.status === 0) {
-            this.makeToast('Success!', 'Feedback successfully submitted', 'success')
-            this.loadContent(0)
+            this.feedbacks = res.data.feedbacks.reverse()
+            this.feedbacks.forEach(async (feedback) => {
+              const id = feedback.trainee_id
+              if (!this.nameMap.has(id)) {
+                const { data } = await this.$axios.get('/name', { params: { id } })
+                const name = data.name
+                this.nameMap.set(id, name)
+              }
+              feedback.name = this.nameMap.get(id)
+            })
           } else if (res.data.status === 1) {
-            this.makeToast('Failed!', 'Message couldn\'t be sent', 'warning')
+            this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
           }
         })
         .catch((error) => {
-          this.makeToast('Internal Error', error, 'danger')
-        })
-        .finally(() => {
-          this.content = ''
+          this.makeToast('Cannot get message!', error, 'danger')
         })
     },
     makeToast (title, message, variant) {
