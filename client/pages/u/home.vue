@@ -6,6 +6,9 @@
           <Title class="text-center my-3 bold">
             Welcome back!
           </Title>
+          <div class="text-center">
+            {{ name }}
+          </div>
         </b-col>
       </b-row>
       <b-row>
@@ -57,6 +60,7 @@ export default {
   data () {
     return {
       type: this.$store.state.session.type,
+      name: '',
       navs: [
         {
           title: 'My Courses',
@@ -81,6 +85,25 @@ export default {
           href: '/u/course/report'
         }
       ]
+    }
+  },
+  created () {
+    this.getName()
+  },
+  methods: {
+    getName () {
+      this.$axios
+        .get('/name', {
+          params: {
+            id: this.$store.state.session.id
+          }
+        })
+        .then((res) => {
+          this.name = res.data.name
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
