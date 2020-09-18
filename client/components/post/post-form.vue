@@ -1,5 +1,5 @@
 <template>
-  <b-form @submit="savePost" @reset="onReset" v-if="show">
+  <b-form v-if="show" @submit="savePost" @reset="onReset">
     <b-form-group
       id="getTitle"
       label="Title: "
@@ -19,11 +19,12 @@
       label="Description: "
       label-for="Desc"
     >
-      <b-form-input
+      <b-form-textarea
         id="Desc"
         v-model="desc"
         type="text"
         placeholder="Enter Description (optional)"
+        row="4"
       />
     </b-form-group>
 
@@ -50,7 +51,63 @@
 </template>
 
 <script>
-
+export default {
+  props: {
+    course: {
+      type: Object,
+      default: null
+    }
+  },
+  data () {
+    return {
+      title: '',
+      desc: '',
+      file: null,
+      show: true
+    }
+  },
+  methods: {
+    savePost (evt) {
+      evt.preventDefault()
+      this.$axios
+        .post('/post', {
+          token: this.$store.state.session.token,
+          trainer_id: this.$store.state.session.id,
+          course_id: this.course.id,
+          title: this.title,
+          desc: this.desc,
+          fileName: this.file.name,
+          content: this.file
+        })
+        .then((response) => {
+          this.makeToast('Success!', 'Material has been uploaded', 'success')
+        })
+        .catch((err) => {
+          console.log(err)
+          this.makeToast('Error while uploading file', err, 'danger')
+        })
+    },
+    onReset (evt) {
+      evt.preventDefault()
+      this.title = ''
+      this.desc = ''
+      this.file = null
+      this.content = ''
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
+    },
+    makeToast (title, message, variant) {
+      this.$bvToast.toast(message, {
+        title,
+        variant,
+        autoHideDelay: 2500,
+        appendToast: true
+      })
+    }
+  }
+}
 </script>
 
 <style>

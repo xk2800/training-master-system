@@ -15,6 +15,23 @@
             {{ nav.nav }}
           </n-link>
         </b-button>
+        <b-button
+          variant="light"
+          class="border-round"
+          block
+        >
+          <n-link :to="adminNav.href" class="no-deco">
+            {{ adminNav.nav }}
+          </n-link>
+        </b-button>
+        <b-button
+          variant="danger"
+          class="border-round"
+          block
+          @click="logout()"
+        >
+          Sign Out
+        </b-button>
       </div>
     </b-sidebar>
   </div>
@@ -41,7 +58,17 @@ export default {
           nav: 'Discussion Forums',
           href: '/u/discussion'
         }
-      ]
+      ],
+      adminNav: {
+        nav: 'Generate Report',
+        href: '/u/report'
+      }
+    }
+  },
+  methods: {
+    logout () {
+      localStorage.clear()
+      this.$router.go('/')
     }
   }
 }

@@ -19,7 +19,7 @@
         </div>
       </div>
       <div v-else-if="this.$store.state.session.type === 1 && selectedCourse.trainer_id === trainerId">
-        <b-button variant="outline-success" href="#">
+        <b-button variant="outline-success" @click="$bvModal.show('postBoard')">
           Manage Material
         </b-button>
         <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
@@ -36,6 +36,9 @@
         <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
           View Feedback
         </b-button>
+        <b-button class="mt-2" variant="outline-info" @click="$bvModal.show('postBoard')">
+          View Material
+        </b-button>
       </div>
     </b-card>
     <b-modal id="feedback" hide-header hide-footer>
@@ -47,6 +50,9 @@
     <b-modal id="feedbackBoard" title="Feedback List" hide-footer>
       <FeedbackBoard :course="selectedCourse" />
     </b-modal>
+    <b-modal id="postBoard" title="Material List" centered hide-footer>
+      <CourseMaterial :course="selectedCourse" />
+    </b-modal>
   </div>
 </template>
 
@@ -54,12 +60,14 @@
 import FeedbackSubmit from '~/components/feedback/feedback-submit'
 import CourseUpdate from '~/components/course/course-update'
 import FeedbackBoard from '~/components/feedback/feedback-board'
+import CourseMaterial from '~/components/post/post-display'
 
 export default {
   components: {
     FeedbackBoard,
     CourseUpdate,
-    FeedbackSubmit
+    FeedbackSubmit,
+    CourseMaterial
   },
   props: {
     selectedCourse: {

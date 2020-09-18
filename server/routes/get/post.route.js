@@ -14,7 +14,7 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js';
 
-const { post, user, course, enrollment } = models;
+const { post, user, course, enrollment, Trainer } = models;
 
 export default (req, res) => {
 
@@ -22,6 +22,16 @@ export default (req, res) => {
 
   if (!token || user_id === undefined || course_id === undefined) {
     return res.status(400).send('invalid usage')
+  }
+
+  const get_type = (id, res, callback) => {
+    user
+      .findOne({ where: { id } })
+      .then((model) => {
+        if (!model) return res.status(200).send({ status: 1 })
+        callback(model.type)
+      })
+      .catch((error) => { error_handle(error, res) })
   }
 
   verifier(token, (valid) => {
@@ -43,20 +53,10 @@ export default (req, res) => {
       .then((models) => {
         const posts = []
         for (const model of models) {
-          const { title, desc } = model
-          posts.push({ title, desc })
+          const { id, title, desc, content, fileName  } = model
+          posts.push({ id, title, desc, content, fileName })
         }
         res.status(200).send({ status: 0, posts })
-      })
-      .catch((error) => { error_handle(error, res) })
-  }
-
-  const get_type = (id, res, callback) => {
-    user
-      .findOne({ where: { id } })
-      .then((model) => {
-        if (!model) return res.status(200).send({ status: 1 })
-        callback(model.type)
       })
       .catch((error) => { error_handle(error, res) })
   }
@@ -71,14 +71,20 @@ export default (req, res) => {
       .catch((error) => { error_handle(error, res) })
   }
 
-  const check_trainer = (trainer_id, course_id, res) => {
-    course
-      .findOne({ where: { id: course_id, trainer_id } })
-      .then((model) => {
-        if (!model) return res.status(200).send({ status: 1 })
-        get_posts(course_id, res)
+  const check_trainer = (user_id, course_id, res) => {
+    Trainer
+      .findOne({ where: { userId: user_id } })
+      .then((trainer) => {
+        course
+        .findOne({ where: { id: course_id, trainer_id: trainer.id } })
+        .then((model) => {
+          if (!model) return res.status(200).send({ status: 1 })
+          get_posts(course_id, res)
+        })
+        .catch((error) => { error_handle(error, res) })
       })
       .catch((error) => { error_handle(error, res) })
+    
   }
 
   const error_handle = (error, res) => {

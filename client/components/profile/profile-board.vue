@@ -64,7 +64,9 @@ export default {
           }
         })
         .catch((error) => {
-          this.makeToast('Cannot get message!', error, 'danger')
+          console.log(this.$store.state.session.token)
+          console.log(this.$store.state.session.id)
+          this.makeToast('Cannot get message!7', error, 'danger')
         })
     },
     onReset () {
