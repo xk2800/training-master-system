@@ -1,6 +1,6 @@
 <template>
   <b-card class="border-round border-0 shadow-sm mt-3">
-    <b-form @submit="onSubmit">
+    <b-form @submit.prevent="onSubmit">
       <b-form-select
         v-model="form.trainerSelected"
         text="Select Trainer"
@@ -92,7 +92,6 @@ export default {
         })
     },
     onSubmit (evt) {
-      evt.preventDefault()
       this.$axios
         .post('/course', {
           token: this.$store.state.session.token,
@@ -104,7 +103,7 @@ export default {
         .then((res) => {
           if (res.data.status === 0) {
             this.makeToast('Success!', 'Course successfully created', 'success')
-            // window.location.reload(true)
+            window.location.reload(true)
           } else if (res.data.status === 1) {
             this.makeToast('Failed!', 'Message couldn\'t be sent', 'warning')
           }

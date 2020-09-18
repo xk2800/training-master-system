@@ -30,7 +30,7 @@
         <b-button variant="outline-success" @click="$bvModal.show('updateCourse')">
           Update Course
         </b-button>
-        <b-button variant="outline-danger" @click="deleteCourse()">
+        <b-button variant="outline-danger" @click="deleteCourse(selectedCourse)">
           Delete Course
         </b-button>
         <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
@@ -126,7 +126,7 @@ export default {
           })
       }
     },
-    deleteCourse () {
+    deleteCourse (course) {
       this.$bvModal.msgBoxConfirm('Please confirm that you want to delete this course.', {
         title: 'Please Confirm',
         size: 'sm',
@@ -138,7 +138,28 @@ export default {
         hideHeaderClose: false,
         centered: true
       })
-        .then((value) => {})
+        .then((value) => {
+          if (value) {
+            this.$axios
+              .delete('/course', {
+                params: {
+                  token: this.$store.state.session.token,
+                  admin_id: this.$store.state.session.id,
+                  course_id: course.id
+                }
+              })
+              .then((res) => {
+                if (res.data.status === 0) {
+                  this.makeToast('Success!', 'Materials have been deleted', 'success')
+                } else if (res.data.status === 1) {
+                  this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
+                }
+              })
+              .catch((error) => {
+                this.makeToast('Cannot get message!', error, 'danger')
+              })
+          }
+        })
         .catch((err) => {
           console.log(err)
         })

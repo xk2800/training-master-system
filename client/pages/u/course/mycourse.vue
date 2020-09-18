@@ -62,7 +62,7 @@ export default {
               .then((res) => {
                 if (res.data.status === 0) {
                   this.makeToast('Successfully Deleted', 'All course(s) has been deleted', 'success')
-                  // window.location.reload(true)
+                  window.location.reload(true)
                 } else if (res.data.status === 1 || res.data.status === 2) {
                   this.makeToast('Couldn\'t Delete!', 'Bad token, Please try again later', 'warning')
                 }
