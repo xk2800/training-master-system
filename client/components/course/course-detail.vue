@@ -19,7 +19,7 @@
         </div>
       </div>
       <div v-else-if="this.$store.state.session.type === 1 && selectedCourse.trainer_id === trainerId">
-        <b-button variant="outline-success" href="#">
+        <b-button variant="outline-success" @click="$bvModal.show('postBoard')">
           Manage Material
         </b-button>
         <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
@@ -30,11 +30,14 @@
         <b-button variant="outline-success" @click="$bvModal.show('updateCourse')">
           Update Course
         </b-button>
-        <b-button variant="outline-danger" @click="deleteCourse()">
+        <b-button variant="outline-danger" @click="deleteCourse(selectedCourse)">
           Delete Course
         </b-button>
         <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
           View Feedback
+        </b-button>
+        <b-button class="mt-2" variant="outline-info" @click="$bvModal.show('postBoard')">
+          View Material
         </b-button>
       </div>
     </b-card>
@@ -47,6 +50,9 @@
     <b-modal id="feedbackBoard" title="Feedback List" hide-footer>
       <FeedbackBoard :course="selectedCourse" />
     </b-modal>
+    <b-modal id="postBoard" title="Material List" centered hide-footer>
+      <CourseMaterial :course="selectedCourse" />
+    </b-modal>
   </div>
 </template>
 
@@ -54,12 +60,14 @@
 import FeedbackSubmit from '~/components/feedback/feedback-submit'
 import CourseUpdate from '~/components/course/course-update'
 import FeedbackBoard from '~/components/feedback/feedback-board'
+import CourseMaterial from '~/components/post/post-display'
 
 export default {
   components: {
     FeedbackBoard,
     CourseUpdate,
-    FeedbackSubmit
+    FeedbackSubmit,
+    CourseMaterial
   },
   props: {
     selectedCourse: {
@@ -118,7 +126,7 @@ export default {
           })
       }
     },
-    deleteCourse () {
+    deleteCourse (course) {
       this.$bvModal.msgBoxConfirm('Please confirm that you want to delete this course.', {
         title: 'Please Confirm',
         size: 'sm',
@@ -130,7 +138,28 @@ export default {
         hideHeaderClose: false,
         centered: true
       })
-        .then((value) => {})
+        .then((value) => {
+          if (value) {
+            this.$axios
+              .delete('/course', {
+                params: {
+                  token: this.$store.state.session.token,
+                  admin_id: this.$store.state.session.id,
+                  course_id: course.id
+                }
+              })
+              .then((res) => {
+                if (res.data.status === 0) {
+                  this.makeToast('Success!', 'Materials have been deleted', 'success')
+                } else if (res.data.status === 1) {
+                  this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
+                }
+              })
+              .catch((error) => {
+                this.makeToast('Cannot get message!', error, 'danger')
+              })
+          }
+        })
         .catch((err) => {
           console.log(err)
         })

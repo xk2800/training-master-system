@@ -6,6 +6,9 @@
           <Title class="text-center my-3 bold">
             Welcome back!
           </Title>
+          <div class="text-center">
+            {{ name }}
+          </div>
         </b-col>
       </b-row>
       <b-row>
@@ -27,6 +30,25 @@
           </n-link>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col
+          v-for="(adminNav, i) in adminNavs"
+          :key="`adminNav${i}`"
+          lg="4"
+          sm="10"
+        >
+          <n-link v-if="type === 0" class="text-decoration-none" :to="adminNav.href">
+            <b-card class="border-0 border-round shadow-sm mt-2">
+              <b-card-title class="text-center">
+                {{ adminNav.title }}
+              </b-card-title>
+              <b-card-body class="text-center">
+                <b-img :src="`/${adminNav.image}`" fluid />
+              </b-card-body>
+            </b-card>
+          </n-link>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -37,6 +59,8 @@ export default {
   middleware: 'authenticated',
   data () {
     return {
+      type: this.$store.state.session.type,
+      name: '',
       navs: [
         {
           title: 'My Courses',
@@ -53,7 +77,33 @@ export default {
           image: 'searchcourse.png',
           href: '/u/course/search'
         }
+      ],
+      adminNavs: [
+        {
+          title: 'Generate Report',
+          image: 'report.png',
+          href: '/u/course/report'
+        }
       ]
+    }
+  },
+  created () {
+    this.getName()
+  },
+  methods: {
+    getName () {
+      this.$axios
+        .get('/name', {
+          params: {
+            id: this.$store.state.session.id
+          }
+        })
+        .then((res) => {
+          this.name = res.data.name
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }

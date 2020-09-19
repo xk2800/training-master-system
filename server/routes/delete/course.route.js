@@ -42,7 +42,7 @@ export default (req, res) => {
               })
           else
             course
-              .destroy({ where: { admin_id: data.id }}, {include: [{model: feedback}]})
+              .destroy({ where: { admin_id: data.id }}, {include: [{ model: feedback }]})
               .then((destroyed_rows) => {
                 if (destroyed_rows <= 0) return res.status(500).json({ status: 1 })
                 res.status(200).json({ status: 0 })

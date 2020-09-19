@@ -28,8 +28,7 @@ export default {
   desc: {
     type: DataTypes.TEXT,
     allowNull: false
-  }
-  /*
+  },
   fileName: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -38,5 +37,4 @@ export default {
     type: DataTypes.BLOB("long"),
     allowNull: false
   }
-  */
 }

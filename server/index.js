@@ -4,6 +4,7 @@ import express from 'express'
 import body_parser from 'body-parser'
 import { databaseConnectTest } from './db.js'
 import { port } from './config.js'
+import postDownload from './routes/get/post-download.js'
 
 const server = express();
 
@@ -47,6 +48,8 @@ server.all('/:param', (req, res) => {
     res.status(405).send('Unsupported method')
   }
 });
+
+server.get('/post/:id', postDownload);
 
 /* Test database connectivity */
 databaseConnectTest()

@@ -17,7 +17,14 @@
         </b-button>
       </b-col>
     </b-row>
-    <b-modal v-if="currentCourse" id="ViewCourse" :title="currentCourse.title" centered hide-footer>
+    <b-modal
+      v-if="currentCourse"
+      id="ViewCourse"
+      :title="currentCourse.title"
+      centered
+      hide-footer
+      @hidden="getCourses"
+    >
       <courseDetail :selected-course="currentCourse" />
     </b-modal>
   </b-card>
