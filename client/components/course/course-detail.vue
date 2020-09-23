@@ -6,7 +6,7 @@
         {{ selectedCourse.desc }}
       </b-card-text>
       <div v-if="this.$store.state.session.type === 2">
-        <b-button variant="outline-success" href="#">
+        <b-button variant="outline-success" @click="enrollCourse(selectedCourse)">
           Enroll Course
         </b-button>
         <b-button variant="outline-danger" href="#">
@@ -78,12 +78,14 @@ export default {
   data () {
     return {
       trainerId: null,
-      adminId: null
+      adminId: null,
+      traineeId: null
     }
   },
   mounted () {
     this.getTrainerId()
     this.getAdminId()
+    this.getTraineeId()
   },
   methods: {
     getTrainerId () {
@@ -125,6 +127,64 @@ export default {
             this.makeToast('Cannot get message!', error, 'danger')
           })
       }
+    },
+    getTraineeId () {
+      if (this.$store.state.session.type === 0) {
+        this.$axios
+          .get('/trainee', {
+            params: {
+              token: this.$store.state.session.token,
+              id: this.$store.state.session.id
+            }
+          })
+          .then((res) => {
+            if (res.data.status === 0) {
+              this.adminId = res.data.id
+            } else if (res.data.status === 1) {
+            }
+          })
+          .catch((error) => {
+            this.makeToast('Cannot get message!', error, 'danger')
+          })
+      }
+    },
+    enrollCourse (course) {
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to enroll to this course.', {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value) {
+            this.$axios
+              .post('/enrollment', {
+                params: {
+                  token: this.$store.state.session.token,
+                  trainee_id: this.$store.state.session.id,
+                  course_id: course.id
+                }
+              })
+              .then((res) => {
+                if (res.data.status === 0) {
+                  this.makeToast('Success!', 'You have enrolled into the course', 'success')
+                } else if (res.data.status === 1) {
+                  this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
+                }
+              })
+              .catch((error) => {
+                this.makeToast('Cannot get message!', error, 'danger')
+              })
+          }
+        })
+        .catch((err) => {
+          this.makeToast('Internam Error!', err, 'danger')
+        })
     },
     deleteCourse (course) {
       this.$bvModal.msgBoxConfirm('Please confirm that you want to delete this course.', {
