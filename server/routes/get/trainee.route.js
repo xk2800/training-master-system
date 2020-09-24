@@ -3,7 +3,7 @@
  * request:
  *   - token: access token AND
  *   - id: user id OR
- *   - trainer_id: trainer_id
+ *   - trainee_id: trainee_id
  * response:
  *   - id: the trainee id OR
  *   - userId: the trainee's user id AND
@@ -37,7 +37,7 @@ export default (req, res) => {
           console.log(error)
           return res.status(500).json({ status: 2 })
         })
-    else if(trainer_id !== undefined)
+    else if(trainee_id !== undefined)
       Trainee
         .findOne({ where: { id: id } })
         .then((model) => {

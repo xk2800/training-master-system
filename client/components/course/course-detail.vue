@@ -129,7 +129,7 @@ export default {
       }
     },
     getTraineeId () {
-      if (this.$store.state.session.type === 0) {
+      if (this.$store.state.session.type === 2) {
         this.$axios
           .get('/trainee', {
             params: {
@@ -139,7 +139,7 @@ export default {
           })
           .then((res) => {
             if (res.data.status === 0) {
-              this.adminId = res.data.id
+              this.traineeId = res.data.id
             } else if (res.data.status === 1) {
             }
           })
@@ -166,7 +166,7 @@ export default {
               .post('/enrollment', {
                 params: {
                   token: this.$store.state.session.token,
-                  trainee_id: this.$store.state.session.id,
+                  trainee_id: this.traineeId,
                   course_id: course.id
                 }
               })
@@ -183,7 +183,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.makeToast('Internam Error!', err, 'danger')
+          this.makeToast('Internal Error!', err, 'danger')
         })
     },
     deleteCourse (course) {

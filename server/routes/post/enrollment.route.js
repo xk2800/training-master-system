@@ -1,5 +1,5 @@
 /**
- * enrol trainee to a course
+ * enroll trainee to a course
  * request: 
  *    - course_id: id of the chosen course
  *    - user_id: user id of the trainee
@@ -14,10 +14,13 @@ const { course, Trainee, enrollment } = models;
 
 export default (req, res) => {
 
-  Trainee.belongsTo(course, {through: enrollment});
-  course.belongsTo(Trainee, {through: enrollment});
+  enrollment.belongsTo(course, {foreignKey: 'course_id'});
+  enrollment.belongsTo(Trainee, {foreignKey: 'trainee_id'});
 
-  const { token, trainee_id, course_id } = req.body;
+  const { token, trainee_id, course_id } = req.body.params;
+
+  console.log(req.body.params)
+  console.log(trainee_id + "    " + course_id)
 
   if(!token || trainee_id === undefined || course_id === undefined) {
     res.status(400).send('Enroll Failed')
@@ -30,11 +33,11 @@ export default (req, res) => {
       .findOne({ where: {id: course_id}})
       .then(course => {
         Trainee
-          .findOne({ where: {id: trainee_id}})
-          .the(trainee => {
+          .findOne({ where: {userId: trainee_id}})
+          .then(trainee => {
             enrollment
               .create({
-                user_id: trainee.userId,
+                user_id: trainee.id,
                 course_id: course.id
               })
               .then((model) => {
@@ -53,7 +56,7 @@ export default (req, res) => {
       })
       .catch((err) => {
         console.log(err)
-        res.status(500).json({ status: 2 })
+        return res.status(500).json({ status: 2 })
       })
   })
 
