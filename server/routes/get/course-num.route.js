@@ -13,13 +13,12 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { user, Trainer } = models;
+const { Trainer, course, user } = models;
 
 export default (req, res) => {
 
-  const { token, user_id } = req.query
-
-  if (!token || user_id === undefined) {
+  const { token, id, user_id } = req.query
+  if (!token || id === undefined ||user_id === undefined) {
     return res.status(400).send('invalid usage')
   }
   
@@ -28,14 +27,20 @@ export default (req, res) => {
     get_type(user_id, res, (type) => {
       if (type !== 0) return res.status(200).send({ status: 1 })
       Trainer
-        .findAll()
-        .then((models) => {
-          const trainers = []
-          for (const model of models) {
-            const { id, userId, name } = model
-            trainers.push({ trainer_id: id, userId, name })
-          }
-          return res.status(200).send({ status: 0, trainers })
+        .findOne({ where: { userId: id } })
+        .then((model) => {
+          if(!model) return res.status(500).send({ status: 2 })
+          course
+            .findAll({ where: { trainer_id: model.id } })
+            .then((courses) => {
+              if(!courses)
+                return res.status(200).send({ status: 0, numCourse: 0 })
+              return res.status(200).send({ status: 0, numCourse: courses.length })
+            })
+            .catch((err) => {
+              console.log(err)
+              res.status(500).json({ status: 2 })
+            })
         })
         .catch((error) => {
           console.log(error)
