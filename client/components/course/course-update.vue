@@ -102,23 +102,26 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
+      console.log(this.form.trainerSelected)
       this.$axios
-        .post('/course', {
+        .put('/course', {
           token: this.$store.state.session.token,
           admin_id: this.$store.state.session.id,
           trainer_id: this.form.trainerSelected.id,
+          course_id: this.selectedCourse.id,
           title: this.form.title,
           desc: this.form.description
         })
         .then((res) => {
           if (res.data.status === 0) {
-            this.makeToast('Success!', 'Course successfully created', 'success')
+            this.makeToast('Success!', 'Course successfully updated', 'success')
             // window.location.reload(true)
           } else if (res.data.status === 1) {
             this.makeToast('Failed!', 'Message couldn\'t be sent', 'warning')
           }
         })
         .catch((error) => {
+          console.log(this.form.trainerSelected.id)
           this.makeToast('Internal Error', error, 'danger')
         })
     },
