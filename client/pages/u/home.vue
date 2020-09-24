@@ -30,7 +30,7 @@
           </n-link>
         </b-col>
       </b-row>
-      <b-row>
+      <b-row class="justify-content-center">
         <b-col
           v-for="(adminNav, i) in adminNavs"
           :key="`adminNav${i}`"

@@ -4,7 +4,6 @@
     <Title class="my-3 bold">
       My Courses
     </Title>
-    <CoursePreview />
     <div v-if="this.$store.state.session.type === 0">
       <b-button v-b-modal.addCourse variant="outline-primary" class="mt-2">
         Add Course
@@ -13,7 +12,7 @@
         Delete All Course
       </b-button>
     </div>
-
+    <CoursePreview />
     <b-modal id="addCourse" title="Add Course" hide-footer>
       <addCourse />
     </b-modal>

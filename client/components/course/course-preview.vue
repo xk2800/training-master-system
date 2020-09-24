@@ -1,33 +1,36 @@
 <template>
-  <b-card class="border-round border-0 shadow-sm mt-3">
-    <b-row
+  <div>
+    <b-card
+      class="border-round border-0 shadow-sm mt-3"
       v-for="(course, i) in courses"
       :key="`course-${i}`"
     >
-      <b-col lg="8">
-        <b-card-title>{{ course.title }}</b-card-title>
-        <b-card-sub-title>{{ course.name }}</b-card-sub-title>
-        <b-card-text class="mt-2">
-          {{ course.desc }}
-        </b-card-text>
-      </b-col>
-      <b-col lg="4" class="mt-4 text-center">
-        <b-button variant="outline-info" @click="selectedCourse(course, i); $bvModal.show('ViewCourse');">
-          View Course Information
-        </b-button>
-      </b-col>
-    </b-row>
-    <b-modal
-      v-if="currentCourse"
-      id="ViewCourse"
-      :title="currentCourse.title"
-      centered
-      hide-footer
-      @hidden="getCourses"
-    >
-      <courseDetail :selected-course="currentCourse" />
-    </b-modal>
-  </b-card>
+      <b-row>
+        <b-col lg="8">
+          <b-card-title>{{ course.title }}</b-card-title>
+          <b-card-sub-title>{{ course.name }}</b-card-sub-title>
+          <b-card-text class="mt-2">
+            {{ course.desc }}
+          </b-card-text>
+        </b-col>
+        <b-col lg="4" class="mt-4 text-center">
+          <b-button variant="outline-info" @click="selectedCourse(course, i); $bvModal.show('ViewCourse');">
+            View Course Information
+          </b-button>
+        </b-col>
+      </b-row>
+      <b-modal
+        v-if="currentCourse"
+        id="ViewCourse"
+        :title="currentCourse.title"
+        centered
+        hide-footer
+        @hidden="getCourses"
+      >
+        <courseDetail :selected-course="currentCourse" />
+      </b-modal>
+    </b-card>
+  </div>
 </template>
 
 <script>
