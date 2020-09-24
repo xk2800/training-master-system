@@ -82,7 +82,7 @@ export default {
         {
           title: 'Generate Report',
           image: 'report.png',
-          href: '/u/course/report'
+          href: '/u/report'
         }
       ]
     }
