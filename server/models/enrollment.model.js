@@ -16,7 +16,7 @@ export default {
     type: DataTypes.BIGINT,
     allowNull: false
   },
-  trainee_id: {
+  user_id: {
     type: DataTypes.BIGINT,
     allowNull: false
   }

@@ -15,7 +15,7 @@ const { course, Trainee, enrollment } = models;
 export default (req, res) => {
 
   enrollment.belongsTo(course, {foreignKey: 'course_id'});
-  enrollment.belongsTo(Trainee, {foreignKey: 'trainee_id'});
+  enrollment.belongsTo(Trainee, {foreignKey: 'user_id'});
 
   const { token, trainee_id, course_id } = req.body.params;
 
@@ -37,7 +37,7 @@ export default (req, res) => {
           .then(trainee => {
             enrollment
               .create({
-                trainee_id: trainee.id,
+                user_id: trainee.userId,
                 course_id: course.id,
               })
               .then((model) => {

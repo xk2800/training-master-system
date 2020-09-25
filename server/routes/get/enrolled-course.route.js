@@ -20,43 +20,43 @@ const { course, Trainee, enrollment } = models;
 
 export default (req, res) => {
 
+  enrollment.belongsTo(course, {foreignKey: 'course_id'});
+  enrollment.belongsTo(Trainee, {foreignKey: 'user_id'});
+
   const { token, user_id } = req.query
 
   if (!token || user_id === undefined) {
     return res.status(400).send('invalid usage')
   }
-
+  
+  const courses = []
+  
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    Trainee
-      .findOne({where: {userId: user_id}})
-      .then((trainee) => {
-        enrollment
-          .findAll({ where: { trainee_id: trainee.id }})
-          .then((enrollment) => {
-            for (const enroll of enrollment) {
-              course
-              .findAll({ where: { id: enroll.course_id }})
-              .then((models) => {
-                const courses = []
-                for (const model of models) {
-                  const { id, trainer_id, admin_id, title, desc } = model
-                  courses.push({ id, trainer_id, admin_id, title, desc })
-                }
-                res.status(200).json({ status: 0, courses })
-              })
-              .catch((error) => { 
-                console.log(error)
-                res.status(500).json({ status: 2 })
-              })
+    enrollment
+      .findAll({ where: { user_id }})
+      .then((enrollment) => {
+        for (const enroll of enrollment) {
+          course
+          .findAll({ where: { id: enroll.course_id }})
+          .then((models) => { 
+            for (const model of models) {
+              const { id, trainer_id, admin_id, title, desc } = model
+              courses.push({ id, trainer_id, admin_id, title, desc })
             }
+            if(enroll == enrollment[enrollment.length-1])
+              res.status(200).json({ status: 0, courses })
           })
           .catch((error) => { 
             console.log(error)
             res.status(500).json({ status: 2 })
           })
+        }
       })
-    
+      .catch((error) => { 
+        console.log(error)
+        res.status(500).json({ status: 2 })
+      })
   })
 
 }
