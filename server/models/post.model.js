@@ -31,10 +31,10 @@ export default {
   },
   fileName: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: true
   },
   content: {
     type: DataTypes.BLOB("long"),
-    allowNull: false
+    allowNull: true
   }
 }

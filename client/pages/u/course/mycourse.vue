@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import CoursePreview from '~/components/course/course-preview'
+import CoursePreview from '~/components/course/course-preview-enrolled'
 import addCourse from '~/components/course/create-course'
 import ProfileBoard from '~/components/profile/profile-board'
 

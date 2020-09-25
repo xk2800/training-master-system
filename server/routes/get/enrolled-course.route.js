@@ -1,19 +1,22 @@
 /**
- * get all the existsing trainer
+ * get all the enrolled courses
  * request:
- *   - admin_id: the admin that getting all trainer
  *   - token: access token
+ *   - user_id: current user's id
  * response:
- *   - trainers:
+ *   - courses:
+ *     - id: the enrolled course id
  *     - trainer_id: the trainer who associated with the course
- *     - name: name of the trainer
+ *     - admin_id: the admin who created the course
+ *     - title: title of the course
+ *     - desc: course description
  *   - status: 0 = success, 1 = access denied, 2 = error occurs
  */
 
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { user, Trainer } = models;
+const { course, user, enrollment } = models;
 
 export default (req, res) => {
 
@@ -22,39 +25,33 @@ export default (req, res) => {
   if (!token || user_id === undefined) {
     return res.status(400).send('invalid usage')
   }
-  
+
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    get_type(user_id, res, (type) => {
-      if (type !== 0) return res.status(200).send({ status: 1 })
-      user
-        .findAll({where : { type: 1 }})
+    enrollment
+    .findAll({ where: { user_id }})
+    .then((enrollment) => {
+      for (const enroll of enrollment) {
+        course
+        .findAll({ where: { id: enroll.course_id }})
         .then((models) => {
-          const trainers = []
+          const courses = []
           for (const model of models) {
-            const { id, userId, name } = model
-            trainers.push({ trainer_id: id, userId, name })
+            const { id, trainer_id, admin_id, title, desc } = model
+            courses.push({ id, trainer_id, admin_id, title, desc })
           }
-          return res.status(200).send({ status: 0, trainers })
+          res.status(200).json({ status: 0, courses })
         })
-        .catch((error) => {
+        .catch((error) => { 
           console.log(error)
           res.status(500).json({ status: 2 })
         })
-    })
-  })
-
-}
-
-const get_type = (id, res, callback) => {
-  user
-    .findOne({ where: { id } })
-    .then((model) => {
-      if (!model) return res.status(200).send({ status: 1 })
-      callback(model.type)
+      }
     })
     .catch((error) => { 
       console.log(error)
       res.status(500).json({ status: 2 })
     })
+  })
+
 }
