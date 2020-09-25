@@ -20,14 +20,6 @@ export default {
   font-weight: 300;
 }
 
-.background {
-  position: fixed;
-  background-color: rgb(69, 177, 247);
-  height: 100vh;
-  width: 100vw;
-  z-index: -100;
-}
-
 .border-round {
   border-radius: 25px;
 }

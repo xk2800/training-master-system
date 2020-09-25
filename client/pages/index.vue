@@ -3,7 +3,7 @@
     <b-container>
       <b-row class="align-self-center vertical-center">
         <b-col lg="6" md="12" class="mx-auto">
-          <b-card class="px-sm-1 px-md-3 py-2 border-round">
+          <b-card class="px-sm-1 px-md-3 py-2 border-round shadow border-0" style="background-color: rgb(247, 247, 247)">
             <Title class="text-center my-3 bold">
               Training Master System
             </Title>
