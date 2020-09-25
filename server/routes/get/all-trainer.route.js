@@ -27,8 +27,8 @@ export default (req, res) => {
     if (!valid) return res.status(200).json({ status: 1 })
     get_type(user_id, res, (type) => {
       if (type !== 0) return res.status(200).send({ status: 1 })
-      Trainer
-        .findAll()
+      user
+        .findAll({ where: {type: 1}})
         .then((models) => {
           const trainers = []
           for (const model of models) {
