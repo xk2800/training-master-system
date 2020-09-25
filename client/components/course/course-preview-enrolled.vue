@@ -57,7 +57,8 @@ export default {
         .get('/enrolled-course', {
           params: {
             token: this.$store.state.session.token,
-            user_id: this.$store.state.session.id
+            user_id: this.$store.state.session.id,
+            type: this.$store.state.session.type
           }
         })
         .then((res) => {
