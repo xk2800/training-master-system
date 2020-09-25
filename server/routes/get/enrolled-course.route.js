@@ -16,7 +16,7 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { course, user, enrollment } = models;
+const { course, Trainee, enrollment } = models;
 
 export default (req, res) => {
 
@@ -28,30 +28,35 @@ export default (req, res) => {
 
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    enrollment
-    .findAll({ where: { user_id }})
-    .then((enrollment) => {
-      for (const enroll of enrollment) {
-        course
-        .findAll({ where: { id: enroll.course_id }})
-        .then((models) => {
-          const courses = []
-          for (const model of models) {
-            const { id, trainer_id, admin_id, title, desc } = model
-            courses.push({ id, trainer_id, admin_id, title, desc })
-          }
-          res.status(200).json({ status: 0, courses })
-        })
-        .catch((error) => { 
-          console.log(error)
-          res.status(500).json({ status: 2 })
-        })
-      }
-    })
-    .catch((error) => { 
-      console.log(error)
-      res.status(500).json({ status: 2 })
-    })
+    Trainee
+      .findOne({where: {userId: user_id}})
+      .then((trainee) => {
+        enrollment
+          .findAll({ where: { trainee_id: trainee.id }})
+          .then((enrollment) => {
+            for (const enroll of enrollment) {
+              course
+              .findAll({ where: { id: enroll.course_id }})
+              .then((models) => {
+                const courses = []
+                for (const model of models) {
+                  const { id, trainer_id, admin_id, title, desc } = model
+                  courses.push({ id, trainer_id, admin_id, title, desc })
+                }
+                res.status(200).json({ status: 0, courses })
+              })
+              .catch((error) => { 
+                console.log(error)
+                res.status(500).json({ status: 2 })
+              })
+            }
+          })
+          .catch((error) => { 
+            console.log(error)
+            res.status(500).json({ status: 2 })
+          })
+      })
+    
   })
 
 }

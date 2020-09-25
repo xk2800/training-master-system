@@ -37,8 +37,8 @@ export default (req, res) => {
           .then(trainee => {
             enrollment
               .create({
-                user_id: trainee.id,
-                course_id: course.id
+                trainee_id: trainee.id,
+                course_id: course.id,
               })
               .then((model) => {
                 if(!model) return res.status(500).json({ status: 2 })
