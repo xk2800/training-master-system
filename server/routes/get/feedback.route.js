@@ -64,8 +64,6 @@ export default (req, res) => {
         error_handle(error, res) })
   }
 
-
-
   const check_trainer = (user_id, course_id, res) => {
     Trainer
       .findOne({ where: { userId: user_id } })

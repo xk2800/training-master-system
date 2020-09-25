@@ -23,8 +23,6 @@ export default (req, res) => {
     return
   }
 
-  console.log('hi' + content)
-
   post.belongsTo(Trainer, {foreignKey: 'trainer_id'});
 
   verifier(token, (valid) => {
