@@ -12,11 +12,11 @@ export default {
     autoIncrement: true,
     primaryKey: true
   },
-  user_id: {
+  course_id: {
     type: DataTypes.BIGINT,
     allowNull: false
   },
-  course_id: {
+  trainee_id: {
     type: DataTypes.BIGINT,
     allowNull: false
   }

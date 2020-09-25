@@ -1,9 +1,11 @@
 <template>
   <div>
-    <b-button v-b-toggle.sidebar-variant class="mt-3 ml-3"><i class="fa fa-bars mr-3" />Navigation</b-button>
+    <b-button v-b-toggle.sidebar-variant class="mt-3 ml-3">
+      <i class="fa fa-bars mr-3" />Navigation
+    </b-button>
     <b-sidebar id="sidebar-variant" title="Training Master System" bg-variant="dark" text-variant="light" shadow>
       <div class="px-3 py-2 text-center">
-        <b-img src="/profile.png" class="mb-3" fluid></b-img>
+        <b-img src="/profile.png" class="mb-3" fluid />
         <b-button
           v-for="(nav,i) in navs"
           :key="`item-${i}`"
@@ -16,6 +18,7 @@
           </n-link>
         </b-button>
         <b-button
+          v-if="userType===0"
           variant="light"
           class="border-round"
           block
@@ -41,6 +44,7 @@
 export default {
   data () {
     return {
+      userType: this.$store.state.session.type,
       navs: [
         {
           nav: 'Home',
