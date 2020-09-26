@@ -20,8 +20,7 @@ const { user } = models;
 export default (req, res) => {
   const saltRounds = 10;
   const {token, id, email, name, ppassword, npassword} = req.body
-
-  if (!token || id === undefined) {
+  if (!token || id === undefined || !ppassword || !npassword) {
     res.status(400).send('invalid input')
     return
   }
