@@ -166,7 +166,7 @@ export default {
               .post('/enrollment', {
                 params: {
                   token: this.$store.state.session.token,
-                  trainee_id: this.traineeId,
+                  trainee_id: this.$store.state.session.id,
                   course_id: course.id
                 }
               })

@@ -32,18 +32,18 @@
       </b-row>
       <b-row class="justify-content-center">
         <b-col
-          v-for="(adminNav, i) in adminNavs"
-          :key="`adminNav${i}`"
+          v-for="(reportNav, i) in reportNavs"
+          :key="`reportNav${i}`"
           lg="4"
           sm="10"
         >
-          <n-link v-if="type === 0" class="text-decoration-none" :to="adminNav.href">
+          <n-link v-if="type !== 2" class="text-decoration-none" :to="reportNav.href">
             <b-card class="border-0 border-round shadow-sm mt-2">
               <b-card-title class="text-center">
-                {{ adminNav.title }}
+                {{ reportNav.title }}
               </b-card-title>
               <b-card-body class="text-center">
-                <b-img :src="`/${adminNav.image}`" fluid />
+                <b-img :src="`/${reportNav.image}`" fluid />
               </b-card-body>
             </b-card>
           </n-link>
@@ -78,7 +78,7 @@ export default {
           href: '/u/course/search'
         }
       ],
-      adminNavs: [
+      reportNavs: [
         {
           title: 'Generate Report',
           image: 'report.png',

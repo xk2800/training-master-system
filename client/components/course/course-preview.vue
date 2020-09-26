@@ -1,9 +1,9 @@
 <template>
   <div>
     <b-card
-      class="border-round border-0 shadow-sm mt-3"
       v-for="(course, i) in courses"
       :key="`course-${i}`"
+      class="border-round border-0 shadow-sm mt-3"
     >
       <b-row>
         <b-col lg="8">
@@ -21,15 +21,15 @@
       </b-row>
     </b-card>
     <b-modal
-        v-if="currentCourse"
-        id="ViewCourse"
-        :title="currentCourse.title"
-        centered
-        hide-footer
-        @hidden="getCourses"
-      >
-        <courseDetail :selected-course="currentCourse" />
-      </b-modal>
+      v-if="currentCourse"
+      id="ViewCourse"
+      :title="currentCourse.title"
+      centered
+      hide-footer
+      @hidden="getCourses"
+    >
+      <courseDetail :selected-course="currentCourse" />
+    </b-modal>
   </div>
 </template>
 

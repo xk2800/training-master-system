@@ -19,5 +19,9 @@ export default {
   user_id: {
     type: DataTypes.BIGINT,
     allowNull: false
+  },
+  trainer_id: {
+    type: DataTypes.BIGINT,
+    allowNull: false
   }
 }

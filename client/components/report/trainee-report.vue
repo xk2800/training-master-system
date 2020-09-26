@@ -16,12 +16,6 @@
 
 <script>
 export default {
-  props: {
-    course: {
-      type: Object,
-      default: null
-    }
-  },
   data () {
     return {
       fields: [

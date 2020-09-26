@@ -10,12 +10,13 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { course, Trainee, enrollment } = models;
+const { course, Trainee, enrollment, Trainer } = models;
 
 export default (req, res) => {
 
   enrollment.belongsTo(course, {foreignKey: 'course_id'});
   enrollment.belongsTo(Trainee, {foreignKey: 'user_id'});
+  enrollment.belongsTo(Trainer, {foreignKey: 'trainer_id'});
 
   const { token, trainee_id, course_id } = req.body.params;
 
@@ -27,30 +28,24 @@ export default (req, res) => {
     course
       .findOne({ where: {id: course_id}})
       .then(course => {
-        Trainee
-          .findOne({ where: {userId: trainee_id}})
-          .then(trainee => {
-            enrollment
-              .findOrCreate({
-                where: {
-                  user_id: trainee.userId,
-                  course_id: course.id
-                },
-                defaults: {
-                  user_id: trainee.userId,
-                  course_id: course.id
-                }
-              })
-              .then(([model_enrollment, isCreated]) => {
-                if(!isCreated) {
-                  return res.status(500).send({ status: 1 })
-                }
-                res.status(200).json({ status: 0 });
-              })
-              .catch((err) => {
-                console.log(err)
-                res.status(500).json({ status: 2 })
-              })
+        enrollment
+          .findOrCreate({
+            where: {
+              user_id: trainee_id,
+              course_id: course.id,
+              trainer_id: course.trainer_id
+            },
+            defaults: {
+              user_id: trainee_id,
+              course_id: course.id,
+              trainer_id: course.trainer_id
+            }
+          })
+          .then(([model_enrollment, isCreated]) => {
+            if(!isCreated) {
+              return res.status(500).send({ status: 1 })
+            }
+            res.status(200).json({ status: 0 });
           })
           .catch((err) => {
             console.log(err)

@@ -21,15 +21,15 @@
       </b-row>
     </b-card>
     <b-modal
-        v-if="currentCourse"
-        id="ViewCourse"
-        :title="currentCourse.title"
-        centered
-        hide-footer
-        @hidden="getCourses"
-      >
-        <courseDetail :selected-course="currentCourse" />
-      </b-modal>
+      v-if="currentCourse"
+      id="ViewCourse"
+      :title="currentCourse.title"
+      centered
+      hide-footer
+      @hidden="getCourses"
+    >
+      <courseDetail :selected-course="currentCourse" />
+    </b-modal>
   </div>
 </template>
 
