@@ -19,7 +19,8 @@
           </b-button>
         </b-col>
       </b-row>
-      <b-modal
+    </b-card>
+    <b-modal
         v-if="currentCourse"
         id="ViewCourse"
         :title="currentCourse.title"
@@ -29,7 +30,6 @@
       >
         <courseDetail :selected-course="currentCourse" />
       </b-modal>
-    </b-card>
   </div>
 </template>
 

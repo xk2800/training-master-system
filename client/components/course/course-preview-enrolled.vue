@@ -1,33 +1,36 @@
 <template>
-  <b-card class="border-round border-0 shadow-sm mt-3">
-    <b-row
+  <div>
+    <b-card
       v-for="(course, i) in courses"
       :key="`course-${i}`"
+      class="border-round border-0 shadow-sm mt-3"
     >
-      <b-col lg="8">
-        <b-card-title>{{ course.title }}</b-card-title>
-        <b-card-sub-title>{{ course.name }}</b-card-sub-title>
-        <b-card-text class="mt-2">
-          {{ course.desc }}
-        </b-card-text>
-      </b-col>
-      <b-col lg="4" class="mt-4 text-center">
-        <b-button variant="outline-info" @click="selectedCourse(course, i); $bvModal.show('ViewCourse');">
-          View Course Information
-        </b-button>
-      </b-col>
-    </b-row>
+      <b-row>
+        <b-col lg="8">
+          <b-card-title>{{ course.title }}</b-card-title>
+          <b-card-sub-title>{{ course.name }}</b-card-sub-title>
+          <b-card-text class="mt-2">
+            {{ course.desc }}
+          </b-card-text>
+        </b-col>
+        <b-col lg="4" class="mt-4 text-center">
+          <b-button variant="outline-info" @click="selectedCourse(course, i);">
+            View Course Information
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-card>
     <b-modal
-      v-if="currentCourse"
-      id="ViewCourse"
-      :title="currentCourse.title"
-      centered
-      hide-footer
-      @hidden="getCourses"
-    >
-      <courseDetail :selected-course="currentCourse" />
-    </b-modal>
-  </b-card>
+        v-if="currentCourse"
+        id="ViewCourse"
+        :title="currentCourse.title"
+        centered
+        hide-footer
+        @hidden="getCourses"
+      >
+        <courseDetail :selected-course="currentCourse" />
+      </b-modal>
+  </div>
 </template>
 
 <script>
@@ -54,7 +57,8 @@ export default {
         .get('/enrolled-course', {
           params: {
             token: this.$store.state.session.token,
-            user_id: this.$store.state.session.id
+            user_id: this.$store.state.session.id,
+            type: this.$store.state.session.type
           }
         })
         .then((res) => {
@@ -82,6 +86,7 @@ export default {
     selectedCourse (course, i) {
       this.currentCourse = course
       this.currentIndex = i
+      this.$bvModal.show('ViewCourse')
     },
     makeToast (title, message, variant) {
       this.$bvToast.toast(message, {

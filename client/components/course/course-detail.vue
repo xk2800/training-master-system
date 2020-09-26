@@ -174,7 +174,7 @@ export default {
                 if (res.data.status === 0) {
                   this.makeToast('Success!', 'You have enrolled into the course', 'success')
                 } else if (res.data.status === 1) {
-                  this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
+                  this.makeToast('Failed!', 'You have already enrolled into the course.', 'info')
                 }
               })
               .catch((error) => {
