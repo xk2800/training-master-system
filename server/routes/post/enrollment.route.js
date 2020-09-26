@@ -4,7 +4,7 @@
  *    - course_id: id of the chosen course
  *    - user_id: user id of the trainee
  * response: 
- *    - status: 0 = success, 1 = fail, 2 = internal error
+ *    - status: 0 = success, 1 = previously enrolled, 2 = internal error
  */
 
 import verifier from '../../utils/token-verifier.js'
@@ -19,13 +19,8 @@ export default (req, res) => {
 
   const { token, trainee_id, course_id } = req.body.params;
 
-  console.log(req.body.params)
-  console.log(trainee_id + "    " + course_id)
-
-  if(!token || trainee_id === undefined || course_id === undefined) {
-    res.status(400).send('Enroll Failed')
-    return
-  }
+  if(!token || trainee_id === undefined || course_id === undefined)
+    return res.status(400).send('Enroll Failed')
   
   verifier(token, (valid) => {
     if(!valid) return res.status(200).json({ status: 1 })
@@ -36,12 +31,20 @@ export default (req, res) => {
           .findOne({ where: {userId: trainee_id}})
           .then(trainee => {
             enrollment
-              .create({
-                user_id: trainee.userId,
-                course_id: course.id,
+              .findOrCreate({
+                where: {
+                  user_id: trainee.userId,
+                  course_id: course.id
+                },
+                defaults: {
+                  user_id: trainee.userId,
+                  course_id: course.id
+                }
               })
-              .then((model) => {
-                if(!model) return res.status(500).json({ status: 2 })
+              .then(([model_enrollment, isCreated]) => {
+                if(!isCreated) {
+                  return res.status(500).send({ status: 1 })
+                }
                 res.status(200).json({ status: 0 });
               })
               .catch((err) => {
