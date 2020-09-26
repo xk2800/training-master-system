@@ -1,14 +1,14 @@
 <template>
   <b-card class="border-round border-0 shadow-sm">
     <div>
-      <Title>Report of all trainers</Title>
+      <Title>Report of all trainees</Title>
       <div>
-        Report Type: Trainer Report <br>
+        Report Type: Trainee Report <br>
         Generated on: {{ date }} {{ time }}
       </div>
-      <b-table bordered outlined hover :items="trainers" :fields="fields" />
+      <b-table bordered outlined hover :items="trainees" :fields="fields" />
       <div>
-        Total number of trainer: {{ trainers.length }}
+        Total number of trainee: {{ trainees.length }}
       </div>
     </div>
   </b-card>
@@ -26,7 +26,7 @@ export default {
     return {
       fields: [
         {
-          key: 'trainer_id',
+          key: 'trainee_id',
           label: 'User ID',
           sortable: true
         },
@@ -36,12 +36,12 @@ export default {
         },
         {
           key: 'numCourse',
-          label: 'Number of course assigned',
+          label: 'Number of course enrolled',
           sortable: true
         }
       ],
       items: new Map(),
-      trainers: [],
+      trainees: [],
       date: this.getTime().formattedDate,
       time: this.getTime().time
     }
@@ -52,7 +52,7 @@ export default {
   methods: {
     loadReport () {
       this.$axios
-        .get('/all-trainer', {
+        .get('/all-trainee', {
           params: {
             token: this.$store.state.session.token,
             user_id: this.$store.state.session.id
@@ -60,15 +60,15 @@ export default {
         })
         .then((res) => {
           if (res.data.status === 0) {
-            this.trainers = res.data.trainers
-            this.trainers.forEach(async (trainer) => {
-              const id = trainer.trainer_id
+            this.trainees = res.data.trainees
+            this.trainees.forEach(async (trainee) => {
+              const id = trainee.trainee_id
               if (!this.items.has(id)) {
-                const { data } = await this.$axios.get('/course-num', { params: { token: this.$store.state.session.token, user_id: this.$store.state.session.id, id, report_type: 1 } })
+                const { data } = await this.$axios.get('/course-num', { params: { token: this.$store.state.session.token, user_id: this.$store.state.session.id, id, report_type: 2 } })
                 const numCourse = data.numCourse
                 this.items.set(id, numCourse)
               }
-              trainer.numCourse = this.items.get(id)
+              trainee.numCourse = this.items.get(id)
             })
           } else if (res.data.status === 1) {
             this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')

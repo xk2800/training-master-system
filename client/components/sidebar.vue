@@ -65,7 +65,7 @@ export default {
       ],
       adminNav: {
         nav: 'Generate Report',
-        href: '/u/report'
+        href: '/u/report/report'
       }
     }
   },

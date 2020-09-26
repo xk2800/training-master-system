@@ -79,7 +79,7 @@ export default (req, res) => {
           res.status(500).json({ status: 2 })
       })
     }
-    else { // trainer
+    else { // admin
       Admin
         .findOne({ where: { userId: user_id }})
         .then((admin) => {
