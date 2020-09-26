@@ -18,13 +18,13 @@
           </n-link>
         </b-button>
         <b-button
-          v-if="userType===0"
+          v-if="userType !== 2"
           variant="light"
           class="border-round"
           block
         >
-          <n-link :to="adminNav.href" class="no-deco">
-            {{ adminNav.nav }}
+          <n-link :to="reportNav.href" class="no-deco">
+            {{ reportNav.nav }}
           </n-link>
         </b-button>
         <b-button
@@ -63,9 +63,9 @@ export default {
           href: '/u/discussion'
         }
       ],
-      adminNav: {
+      reportNav: {
         nav: 'Generate Report',
-        href: '/u/report'
+        href: '/u/report/report'
       }
     }
   },
