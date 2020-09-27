@@ -77,8 +77,7 @@ export default {
         trainerSelected: '',
         title: '',
         description: '',
-        mm: '',
-        dd: ''
+        mm: ''
       },
       nameMap: new Map(),
       trainers: []

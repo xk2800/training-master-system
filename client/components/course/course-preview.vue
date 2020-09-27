@@ -24,6 +24,7 @@
       v-if="currentCourse"
       id="ViewCourse"
       :title="currentCourse.title"
+      size="lg"
       centered
       hide-footer
       @hidden="getCourses"

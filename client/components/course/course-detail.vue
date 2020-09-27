@@ -40,7 +40,7 @@
           View Feedback
         </b-button>
         <div class="mt-2">
-          <b-button variant="outline-dark" @click="$bvModal.show('')">
+          <b-button variant="outline-dark" @click="$bvModal.show('courseRecord')">
             Training Records/Remarks
           </b-button>
         </div>
@@ -69,8 +69,11 @@
     <b-modal id="feedbackBoard" title="Feedback List" hide-footer>
       <FeedbackBoard :course="selectedCourse" />
     </b-modal>
-    <b-modal id="postBoard" title="Material List" centered hide-footer>
+    <b-modal id="postBoard" size="lg" title="Material List" centered hide-footer>
       <CourseMaterial :course="selectedCourse" />
+    </b-modal>
+    <b-modal id="courseRecord" size="xl" title="Training Record" centered hide-footer>
+      <CourseRecord :course="selectedCourse" />
     </b-modal>
   </div>
 </template>
@@ -80,13 +83,15 @@ import FeedbackSubmit from '~/components/feedback/feedback-submit'
 import CourseUpdate from '~/components/course/course-update'
 import FeedbackBoard from '~/components/feedback/feedback-board'
 import CourseMaterial from '~/components/post/post-display'
+import CourseRecord from '~/components/course/course-record'
 
 export default {
   components: {
     FeedbackBoard,
     CourseUpdate,
     FeedbackSubmit,
-    CourseMaterial
+    CourseMaterial,
+    CourseRecord
   },
   props: {
     selectedCourse: {
