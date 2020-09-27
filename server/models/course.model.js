@@ -1,5 +1,7 @@
 /**
  * Course model
+ * 
+ * Status: 1 - Active, 2 - Complete, 3 - Postpone, 4 - Close
  */
 
 import sql from 'sequelize'
@@ -26,6 +28,15 @@ export default {
   },
   desc: {
     type: DataTypes.TEXT,
+    allowNull: false
+  },
+  duration: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  status: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
     allowNull: false
   }
 }

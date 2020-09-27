@@ -6,6 +6,11 @@
         text="Select Trainer"
         class="m-md-2"
       >
+        <template v-slot:first>
+          <b-form-select-option :value="{id: selectedCourse.trainer_id, text: selectedCourse.name}" disabled>
+            Current Trainer: {{ selectedCourse.name }}
+          </b-form-select-option>
+        </template>
         <b-form-select-option
           v-for="(trainer, i) in trainers"
           :key="`trainer-${i}`"
@@ -102,7 +107,9 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
-      console.log(this.form.trainerSelected)
+      if (!this.form.trainerSelected) {
+        this.form.trainerSelected = { id: this.selectedCourse.trainer_id, text: this.selectedCourse.name }
+      }
       this.$axios
         .put('/course', {
           token: this.$store.state.session.token,

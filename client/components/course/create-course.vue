@@ -1,11 +1,18 @@
 <template>
   <b-card class="border-round border-0 shadow-sm mt-3">
     <b-form @submit.prevent="onSubmit">
+      <div>Select Trainer: </div>
       <b-form-select
         v-model="form.trainerSelected"
+        label="Select trainer"
         text="Select Trainer"
         class="m-md-2"
       >
+        <template v-slot:first>
+          <b-form-select-option :value="null" disabled>
+            -- Please select an option --
+          </b-form-select-option>
+        </template>
         <b-form-select-option
           v-for="(trainer, i) in trainers"
           :key="`trainer-${i}`"
@@ -14,6 +21,22 @@
           {{ trainer.name }}
         </b-form-select-option>
       </b-form-select>
+      <b-form-group
+        label="Duration: "
+        label-for="duration"
+      >
+        <b-input-group
+          description="Please enter the duration of the training course"
+        >
+          <b-form-input
+            id="month"
+            v-model="form.mm"
+            type="number"
+            min="0"
+            max="24"
+          />Month(s)
+        </b-input-group>
+      </b-form-group>
       <b-form-group
         label="Title: "
         label-for="title-1"
@@ -53,7 +76,9 @@ export default {
       form: {
         trainerSelected: '',
         title: '',
-        description: ''
+        description: '',
+        mm: '',
+        dd: ''
       },
       nameMap: new Map(),
       trainers: []
@@ -98,7 +123,8 @@ export default {
           admin_id: this.$store.state.session.id,
           trainer_id: this.form.trainerSelected.id,
           title: this.form.title,
-          desc: this.form.description
+          desc: this.form.description,
+          duration: this.form.mm
         })
         .then((res) => {
           if (res.data.status === 0) {

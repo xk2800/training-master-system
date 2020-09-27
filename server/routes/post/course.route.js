@@ -22,9 +22,9 @@ export default (req, res) => {
   course.belongsTo(Admin, {foreignKey: 'admin_id'});
   course.belongsTo(Trainer, {foreignKey: 'trainer_id'});
 
-  const {token, admin_id, trainer_id, title, desc} = req.body;
+  const {token, admin_id, trainer_id, title, desc, duration} = req.body;
 
-  if(!token || admin_id === undefined || trainer_id === undefined || !title || !desc) {
+  if(!token || admin_id === undefined || trainer_id === undefined || !title || !desc || duration === undefined) {
     res.status(400).send('invalid input')
     return
   }
@@ -46,7 +46,8 @@ export default (req, res) => {
                   admin_id: admin.id, 
                   trainer_id: trainer.id, 
                   title: title, 
-                  desc: desc
+                  desc: desc,
+                  duration: duration
                 },{ 
                   include: [Admin] 
                 })

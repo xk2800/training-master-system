@@ -1,11 +1,6 @@
 /**
  * create a course associated with a trainer
  * request:
- *   - token: access token
- *   - admin_id: the admin that editing the course
- *   - course_id: the editing course
- *   - title: new title of the course
- *   - desc: new course description
  * response:
  *   - status: 0 = success, 1 = account exists, 2 = internal error
  */
@@ -17,9 +12,11 @@ const { course } = models;
 
 export default (req, res) => {
 
-  const {token, admin_id, trainer_id, course_id, title, desc} = req.body
+  console.log(req.body)
 
-  if(!token || admin_id === undefined || trainer_id == undefined || course_id === undefined || !title || !desc) {
+  const {token, trainer_id, course_id, status} = req.body.params
+
+  if(!token || trainer_id == undefined || course_id === undefined || status === undefined) {
     res.status(400).send('invalid input')
     return
   }
@@ -27,8 +24,8 @@ export default (req, res) => {
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
     course
-      .update({ title, desc, trainer_id }, { where: { id: course_id, admin_id } })
-      .then(([affected_row, _]) => {
+      .update({ status }, { where: { id: course_id, trainer_id } })
+      .then(([affected_row, _], courses) => {
         if (affected_row <= 0) return res.status(500).json({ status: 1 })
         res.status(200).json({ status: 0 })
       })
