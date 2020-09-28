@@ -51,6 +51,14 @@ export default {
         {
           key: 'name',
           sortable: true
+        },
+        {
+          key: 'progress',
+          sortable: true
+        },
+        {
+          key: 'grade',
+          sortable: true
         }
       ],
       trainees: [],

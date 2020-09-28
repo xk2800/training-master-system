@@ -13,7 +13,7 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { user } = models;
+const { user, Trainer } = models;
 
 export default (req, res) => {
 
@@ -22,6 +22,8 @@ export default (req, res) => {
   if (!token || user_id === undefined) {
     return res.status(400).send('invalid usage')
   }
+
+  const trainers = []
   
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
@@ -30,12 +32,18 @@ export default (req, res) => {
       user
         .findAll({where : { type: 1 }})
         .then((models) => {
-          const trainers = []
           for (const model of models) {
-            const { id, userId, name } = model
-            trainers.push({ trainer_id: id, userId, name })
+            Trainer
+              .findOne({ where: { userId: model.id } })
+              .then((trainer) => {
+                const { rating } = trainer
+                const { id, userId, name } = model
+                trainers.push({ trainer_id: id, name, rating })
+                if(model == models[models.length-1]){
+                  return res.status(200).send({ status: 0, trainers })
+                }
+              })
           }
-          return res.status(200).send({ status: 0, trainers })
         })
         .catch((error) => {
           console.log(error)

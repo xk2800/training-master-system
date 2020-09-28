@@ -6,7 +6,31 @@
         Report Type: Trainer Report <br>
         Generated on: {{ date }} {{ time }}
       </div>
-      <b-table bordered outlined hover :items="trainers" :fields="fields" />
+      <b-table
+        bordered
+        outlined
+        hover
+        :items="trainers"
+        :fields="fields"
+        @row-clicked="item=>$set(item, '_showDetails', !item._showDetails) "
+      >
+        <template v-slot:row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm">
+                <b>Number of course(s) assigned: </b>
+              </b-col>
+              <b-col>{{ row.item.numCourse }}</b-col>
+            </b-row>
+            <b-table
+              bordered
+              outlined
+              hover
+              :items="row.item.courses"
+            />
+          </b-card>
+        </template>
+      </b-table>
       <div>
         Total number of trainer: {{ trainers.length }}
       </div>
@@ -32,12 +56,18 @@ export default {
           key: 'numCourse',
           label: 'Number of course assigned',
           sortable: true
+        },
+        {
+          key: 'rating',
+          label: 'Rating',
+          sortable: true
         }
       ],
       items: new Map(),
       trainers: [],
       date: this.getTime().formattedDate,
-      time: this.getTime().time
+      time: this.getTime().time,
+      courses: new Map()
     }
   },
   created () {
@@ -63,6 +93,19 @@ export default {
                 this.items.set(id, numCourse)
               }
               trainer.numCourse = this.items.get(id)
+              if (!this.courses.has(id)) {
+                const { data } = await this.$axios.get('/enrolled-course',
+                  {
+                    params: {
+                      token: this.$store.state.session.token,
+                      user_id: trainer.trainer_id,
+                      type: 1
+                    }
+                  })
+                const courses = data.courses
+                this.courses.set(id, courses)
+              }
+              trainer.courses = this.courses.get(id)
             })
           } else if (res.data.status === 1) {
             this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')

@@ -17,8 +17,9 @@ const { user, enrollment, Trainer } = models;
 
 export default (req, res) => {
 
-  const { token, user_id, course_id } = req.query
+  const { token, user_id, course_id, trainee_id } = req.query
 
+  console.log(req.query)
   if (!token || user_id === undefined || course_id === undefined) {
     return res.status(400).send('invalid usage')
   }
@@ -28,38 +29,46 @@ export default (req, res) => {
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
     get_type(user_id, res, (type) => {
-      if (type !== 1) return res.status(200).send({ status: 1 })
-      Trainer
-        .findOne({ where: { userId: user_id }})
-        .then((trainer) => {
-          if(!trainer) return res.status(500).json({ status: 1 })
+      if (type === 2) return res.status(200).send({ status: 1 })
+      if(type === 1)
+        Trainer
+          .findOne({ where: { userId: user_id }})
+          .then((trainer) => {
+            if(!trainer) return res.status(500).json({ status: 1 })
+            enrollment
+              .findAll({where : { course_id, trainer_id: trainer.id }})
+              .then((models) => {
+                if(!models) return res.status(500).json({ status: 1 })
+                for (const model of models) {
+                  const {grade, progress, rateSubmitted, enrollDate} = model
+                  user
+                    .findOne({ where: { id: model.user_id }})
+                    .then((user) => {
+                      const { id, name, email } = user
+                      trainees.push({ trainee_id: id, name, email, progress, grade, rateSubmitted, enrollDate })
+                      if(model == models[models.length-1]){
+                        return res.status(200).send({ status: 0, trainees })
+                      }
+                    })
+                }
+                
+              })
+              .catch((error) => {
+                console.log(error)
+                res.status(500).json({ status: 2 })
+              })
+          })
+          .catch((error) => {
+            console.log(error)
+            res.status(500).json({ status: 2 })
+          })
+      else
           enrollment
-            .findAll({where : { course_id, trainer_id: trainer.id }})
-            .then((models) => {
-              if(!models) return res.status(500).json({ status: 1 })
-              for (const model of models) {
-                const {grade, progress, rateSubmitted, enrollDate} = model
-                user
-                  .findOne({ where: { id: model.user_id }})
-                  .then((user) => {
-                    const { id, name, email } = user
-                    trainees.push({ trainee_id: id, name, email, progress, grade, rateSubmitted, enrollDate })
-                    if(model == models[models.length-1]){
-                      return res.status(200).send({ status: 0, trainees })
-                    }
-                  })
-              }
-              
+            .findOne({ where: {course_id, user_id: trainee_id} })
+            .then((model) => {
+              if(!model) return res.status(500).json({ status: 1 })
+              return res.status(200).send({ status: 0, model })
             })
-            .catch((error) => {
-              console.log(error)
-              res.status(500).json({ status: 2 })
-            })
-        })
-        .catch((error) => {
-          console.log(error)
-          res.status(500).json({ status: 2 })
-        })
     })
   })
 
