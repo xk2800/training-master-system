@@ -11,6 +11,7 @@
 import SearchCourse from '~/components/course/search-course'
 
 export default {
+  middleware: 'authenticated',
   components: {
     SearchCourse
   }

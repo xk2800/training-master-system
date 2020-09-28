@@ -38,14 +38,13 @@ export default (req, res) => {
             .then((models) => {
               if(!models) return res.status(500).json({ status: 1 })
               for (const model of models) {
+                const {grade, progress, rateSubmitted, enrollDate} = model
                 user
                   .findOne({ where: { id: model.user_id }})
                   .then((user) => {
-                    const { id, name } = user
-                    trainees.push({ trainee_id: id, name })
-                    console.log(trainees)
+                    const { id, name, email } = user
+                    trainees.push({ trainee_id: id, name, email, progress, grade, rateSubmitted, enrollDate })
                     if(model == models[models.length-1]){
-                      console.log(trainees)
                       return res.status(200).send({ status: 0, trainees })
                     }
                   })

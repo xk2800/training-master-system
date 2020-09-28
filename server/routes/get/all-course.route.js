@@ -32,8 +32,8 @@ export default (req, res) => {
       .then((models) => {
         const courses = []
         for (const model of models) {
-          const { id, trainer_id, admin_id, title, desc } = model
-          courses.push({ id, trainer_id, admin_id, title, desc })
+          const { id, trainer_id, admin_id, title, desc, duration, status } = model
+          courses.push({ id, trainer_id, admin_id, title, desc, duration, status })
         }
         res.status(200).json({ status: 0, courses })
       })

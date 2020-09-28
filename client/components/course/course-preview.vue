@@ -8,7 +8,7 @@
       <b-row>
         <b-col lg="8">
           <b-card-title>{{ course.title }}</b-card-title>
-          <b-card-sub-title>{{ course.name }}</b-card-sub-title>
+          <b-card-sub-title>Trainer: {{ course.name }} Duration: {{ course.duration }} month(s)</b-card-sub-title>
           <b-card-text class="mt-2">
             {{ course.desc }}
           </b-card-text>
@@ -24,6 +24,7 @@
       v-if="currentCourse"
       id="ViewCourse"
       :title="currentCourse.title"
+      size="lg"
       centered
       hide-footer
       @hidden="getCourses"

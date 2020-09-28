@@ -30,8 +30,8 @@ export default (req, res) => {
       .findOne({ where: { id: course_id } })
       .then((model) => {
         if (!model) return res.status(200).json({ status: 1 })
-        const { trainer_id, admin_id, title, desc } = model
-        res.status(200).json({ status: 0, admin_id, trainer_id, title, desc })
+        const { trainer_id, admin_id, title, desc, duration, status } = model
+        res.status(200).json({ status: 0, admin_id, trainer_id, title, desc, duration, status })
       })
       .catch((error) => { 
         console.log(error)
