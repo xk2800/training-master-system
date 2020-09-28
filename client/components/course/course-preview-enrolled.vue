@@ -1,5 +1,10 @@
 <template>
   <div>
+    <b-card v-if="courses.length === 0 && userType === 2" class="border-round border-0 shadow-sm mt-3">
+      <b-card-text>
+        You have not yet enrolled in any training course.
+      </b-card-text>
+    </b-card>
     <b-card
       v-for="(course, i) in courses"
       :key="`course-${i}`"
@@ -46,7 +51,8 @@ export default {
       nameMap: new Map(),
       courses: [],
       currentCourse: null,
-      currentIndex: ''
+      currentIndex: '',
+      userType: this.$store.state.session.type
     }
   },
   mounted () {

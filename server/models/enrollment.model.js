@@ -43,5 +43,10 @@ export default {
     type: DataTypes.INTEGER,
     defaultValue: 0,
     allowNull: false
+  },
+  traineeRateNum: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: false
   }
 }

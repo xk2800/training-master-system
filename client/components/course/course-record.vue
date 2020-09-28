@@ -239,9 +239,6 @@ export default {
           this.makeToast('Internal Error', err, 'danger')
         })
     },
-    onSubmit (evt) {
-
-    },
     makeToast (title, message, variant) {
       this.$bvToast.toast(message, {
         title,

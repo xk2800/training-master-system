@@ -8,7 +8,7 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { course } = models;
+const { course, Trainer } = models;
 
 export default (req, res) => {
   
@@ -21,16 +21,25 @@ export default (req, res) => {
   
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    course
-      .update({ status }, { where: { id: course_id, trainer_id } })
-      .then(([affected_row, _]) => {
-        if (affected_row <= 0) return res.status(500).json({ status: 1 })
-        res.status(200).json({ status: 0 })
+    Trainer
+      .findOne({ where: {userId: trainer_id} })
+      .then((trainer) => {
+        course
+          .update({ status }, { where: { id: course_id, trainer_id: trainer.id } })
+          .then(([affected_row, _]) => {
+            if (affected_row <= 0) return res.status(500).json({ status: 1 })
+            res.status(200).json({ status: 0 })
+          })
+          .catch((error) => {
+            console.log(error)
+            res.status(500).json({ status: 2 })
+          })
       })
       .catch((error) => {
         console.log(error)
         res.status(500).json({ status: 2 })
       })
+    
   })
 
 }

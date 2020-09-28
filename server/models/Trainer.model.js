@@ -23,5 +23,10 @@ export default {
   },
   title: {
     type: DataTypes.TEXT
+  },
+  rating: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: false
   }
 }
