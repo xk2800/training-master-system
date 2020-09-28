@@ -6,17 +6,18 @@
         {{ selectedCourse.desc }}
       </b-card-text>
       <div v-if="this.$store.state.session.type === 2">
-        <b-button id="enroll" variant="outline-success" :disabled="isDisable" @click="enrollCourse(selectedCourse)">
+        <b-button v-if="!enrolled" id="enroll" variant="outline-success" :disabled="isDisable" @click="enrollCourse(selectedCourse)">
           Enroll Course
         </b-button>
-        <b-button variant="outline-danger" @click="dropCourse(selectedCourse)">
+        <b-button v-if="enrolled" variant="outline-danger" @click="dropCourse(selectedCourse)">
           Drop Course
         </b-button>
-        <div class="mt-2">
-          <b-button variant="outline-primary" @click="$bvModal.show('feedback')">
-            My feedback
-          </b-button>
-        </div>
+        <b-button variant="outline-primary" @click="$bvModal.show('feedback')">
+          My feedback
+        </b-button>
+        <b-button v-if="enrolled && selectedCourse.status === 2" variant="outline-info" @click="$bvModal.show('TE')">
+          Training Evaluation
+        </b-button>
         <div>
           <b-card-text v-b-tooltip.hover.right="'It could happen when the course has been set as complete or close. If you think this is a mistake, please report to us via feedback'" text-variant="secondary">
             Why I can't enroll into the course?
@@ -55,7 +56,7 @@
         <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
           View Feedback
         </b-button>
-        <b-button class="mt-2" variant="outline-info" @click="$bvModal.show('postBoard')">
+        <b-button variant="outline-info" @click="$bvModal.show('postBoard')">
           View Material
         </b-button>
       </div>
@@ -75,6 +76,9 @@
     <b-modal id="courseRecord" size="xl" title="Training Record" centered hide-footer>
       <CourseRecord :course="selectedCourse" />
     </b-modal>
+    <b-modal id="TE" size="xl" title="Training Evaluation" centered hide-footer>
+      <TEvaluation :course="selectedCourse" />
+    </b-modal>
   </div>
 </template>
 
@@ -84,6 +88,7 @@ import CourseUpdate from '~/components/course/course-update'
 import FeedbackBoard from '~/components/feedback/feedback-board'
 import CourseMaterial from '~/components/post/post-display'
 import CourseRecord from '~/components/course/course-record'
+import TEvaluation from '~/components/course/course-evaluation'
 
 export default {
   components: {
@@ -91,7 +96,8 @@ export default {
     CourseUpdate,
     FeedbackSubmit,
     CourseMaterial,
-    CourseRecord
+    CourseRecord,
+    TEvaluation
   },
   props: {
     selectedCourse: {
@@ -113,7 +119,8 @@ export default {
       ],
       selectCourse: this.selectedCourse,
       isDisable: false,
-      courseState: ''
+      courseState: '',
+      enrolled: false
     }
   },
   mounted () {
@@ -193,6 +200,24 @@ export default {
             }
           })
           .then((res) => {
+            this.$axios
+              .get('/enrollment', {
+                params: {
+                  token: this.$store.state.session.token,
+                  user_id: this.$store.state.session.id,
+                  course_id: this.selectCourse.id
+                }
+              })
+              .then((res) => {
+                if (res.data.status === 1) {
+                  this.enrolled = false
+                } else if (res.data.status === 0) {
+                  this.enrolled = true
+                }
+              })
+              .catch((error) => {
+                this.makeToast('Cannot get enrollment message!', error, 'danger')
+              })
             if (res.data.status === 0) {
               this.traineeId = res.data.id
             } else if (res.data.status === 1) {

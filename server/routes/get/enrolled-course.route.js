@@ -68,6 +68,7 @@ export default (req, res) => {
           course
             .findAll({ where: { trainer_id: trainer.id }})
             .then((models) => {
+              if (!models) return res.status(200).json({ status: 1 })
               for (const model of models) {
                 const { id, trainer_id, admin_id, title, desc, duration, status } = model
                 courses.push({ id, trainer_id, admin_id, title, desc, duration, status })
