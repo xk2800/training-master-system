@@ -20,8 +20,7 @@ const { user } = models;
 export default (req, res) => {
   const saltRounds = 10;
   const {token, id, email, name, ppassword, npassword} = req.body
-
-  if (!token || id === undefined || !email || !name) {
+  if (!token || id === undefined || !ppassword || !npassword) {
     res.status(400).send('invalid input')
     return
   }
@@ -44,7 +43,6 @@ export default (req, res) => {
       })
   }
   else {
-    let password = ''
     verifier(token, (valid) => {
       if (!valid) return res.status(200).json({ status: 1 })
       user
@@ -67,20 +65,56 @@ export default (req, res) => {
                   message: 'Bcrypt failed'
                 });
               }
-    
-              user
-              .update(
-                { email, name, password: hash },
-                { where: { id } }
-              )
-              .then(([affected_row, _]) => {
-                if (affected_row <= 0) return res.status(500).json({ status: 1 })
-                res.status(200).json({ status: 0 })
-              })
-              .catch((error) => {
-                console.log(error)
-                res.status(500).json({ status: 2 })
-              })
+              if (!email && !name){
+                user
+                  .update({password: hash}, {where: {id}})
+                  .then(([affected_row, _]) => {
+                    if (affected_row <= 0) return res.status(500).json({ status: 1 })
+                    res.status(200).json({ status: 0 })
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    res.status(500).json({ status: 2 })
+                  })
+              }
+              else if (!email){
+                user
+                  .update({name, password: hash}, {where: {id}})
+                  .then(([affected_row, _]) => {
+                    if (affected_row <= 0) return res.status(500).json({ status: 1 })
+                    res.status(200).json({ status: 0 })
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    res.status(500).json({ status: 2 })
+                  })
+              }
+              else if (!name){
+                user
+                  .update({email, password: hash}, {where: {id}})
+                  .then(([affected_row, _]) => {
+                    if (affected_row <= 0) return res.status(500).json({ status: 1 })
+                    res.status(200).json({ status: 0 })
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    res.status(500).json({ status: 2 })
+                  })
+              }
+              else 
+                user
+                  .update(
+                    { email, name, password: hash },
+                    { where: { id } }
+                  )
+                  .then(([affected_row, _]) => {
+                    if (affected_row <= 0) return res.status(500).json({ status: 1 })
+                    res.status(200).json({ status: 0 })
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    res.status(500).json({ status: 2 })
+                  })
             });
           })
         })

@@ -40,8 +40,8 @@ export default (req, res) => {
               for (const model of models) {
                 const { course_id } = model
                 const course_model = await course.findOne({ where: { id: course_id } })
-                const { trainer_id, title, desc } = course_model
-                courses.push({ trainer_id, title, desc })
+                const { trainer_id, title, desc, duration, status } = course_model
+                courses.push({ trainer_id, title, desc, duration, status })
               }
               res.status(200).json({ status: 0, courses })
             } catch (error) {

@@ -44,8 +44,8 @@ export default (req, res) => {
           .findAll({ where: { id: enroll.course_id }})
           .then((models) => { 
             for (const model of models) {
-              const { id, trainer_id, admin_id, title, desc } = model
-              courses.push({ id, trainer_id, admin_id, title, desc })
+              const { id, trainer_id, admin_id, title, desc, duration, status } = model
+              courses.push({ id, trainer_id, admin_id, title, desc, duration, status })
             }
             if(enroll == enrollment[enrollment.length-1])
               res.status(200).json({ status: 0, courses })
@@ -69,8 +69,8 @@ export default (req, res) => {
             .findAll({ where: { trainer_id: trainer.id }})
             .then((models) => {
               for (const model of models) {
-                const { id, trainer_id, admin_id, title, desc } = model
-                courses.push({ id, trainer_id, admin_id, title, desc })
+                const { id, trainer_id, admin_id, title, desc, duration, status } = model
+                courses.push({ id, trainer_id, admin_id, title, desc, duration, status })
               }
               res.status(200).json({ status: 0, courses })
             })
@@ -88,8 +88,8 @@ export default (req, res) => {
             .findAll({ where: { admin_id: admin.id }})
             .then((models) => {
               for (const model of models) {
-                const { id, trainer_id, admin_id, title, desc } = model
-                courses.push({ id, trainer_id, admin_id, title, desc })
+                const { id, trainer_id, admin_id, title, desc, duration, status } = model
+                courses.push({ id, trainer_id, admin_id, title, desc, duration, status })
               }
               res.status(200).json({ status: 0, courses })
             })
