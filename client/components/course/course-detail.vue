@@ -9,7 +9,7 @@
         <b-button id="enroll" variant="outline-success" :disabled="isDisable" @click="enrollCourse(selectedCourse)">
           Enroll Course
         </b-button>
-        <b-button variant="outline-danger" href="#" :disabled="isDisable">
+        <b-button variant="outline-danger" @click="dropCourse(selectedCourse)">
           Drop Course
         </b-button>
         <div class="mt-2">
@@ -230,6 +230,44 @@ export default {
                   this.makeToast('Success!', 'You have enrolled into the course', 'success')
                 } else if (res.data.status === 1) {
                   this.makeToast('Failed!', 'You have already enrolled into the course.', 'info')
+                }
+              })
+              .catch((error) => {
+                this.makeToast('Cannot get message!', error, 'danger')
+              })
+          }
+        })
+        .catch((err) => {
+          this.makeToast('Internal Error!', err, 'danger')
+        })
+    },
+    dropCourse (course) {
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to drop to this course.', {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value) {
+            this.$axios
+              .delete('/enrollment', {
+                params: {
+                  token: this.$store.state.session.token,
+                  trainee_id: this.$store.state.session.id,
+                  course_id: course.id
+                }
+              })
+              .then((res) => {
+                if (res.data.status === 0) {
+                  this.makeToast('Success!', 'You have dropped out from the course', 'success')
+                } else if (res.data.status === 1) {
+                  this.makeToast('Failed!', 'You are not enrolled into the course.', 'info')
                 }
               })
               .catch((error) => {
