@@ -12,6 +12,9 @@
         <b-button v-if="enrolled" variant="outline-danger" @click="dropCourse(selectedCourse)">
           Drop Course
         </b-button>
+        <b-button v-if="enrolled" variant="outline-success" :disabled="isDisable" @click="$bvModal.show('postBoard')">
+          View Material
+        </b-button>
         <b-button variant="outline-primary" @click="$bvModal.show('feedback')">
           My feedback
         </b-button>

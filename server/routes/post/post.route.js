@@ -18,7 +18,7 @@ const { post, course, Trainer } = models;
 export default (req, res) => {
 
   const { token, trainer_id, course_id, title, desc, content, fileName } = req.body;
-  if(!token || trainer_id === undefined || course_id === undefined || !title || !desc || !content || !fileName) {
+  if(!token || trainer_id === undefined || course_id === undefined || !title || !content || !fileName) {
     res.status(400).send('invalid input')
     return
   }
