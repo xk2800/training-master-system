@@ -17,24 +17,36 @@ const { post } = models;
 
 export default (req, res) => {
 
-  const { token, trainer_id, course_id, title, desc } = req.body;
-  if(!token || trainer_id === undefined || course_id === undefined || !title || !desc) {
+  const { token, trainer_id, course_id, title, desc, fileName, content } = req.body;
+  if(!token || trainer_id === undefined || course_id === undefined || !title) {
     res.status(400).send('invalid input')
     return
   }
 
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    post
-      .update({ title, desc }, { where: { id: course_id, trainer_id } })
-      .then(([affected_row, _]) => {
-        if (affected_row <= 0) return res.status(500).json({ status: 1 })
-        res.status(200).json({ status: 0 })
-      })
-      .catch((error) => {
-        console.log(error)
-        res.status(500).json({ status: 2 })
-      })
+    if(!fileName || !content)
+      post
+        .update({ title, desc },{ where: { course_id, trainer_id}})
+        .then(([affected_row, _]) => {
+          if (affected_row <= 0) return res.status(500).json({ status: 1 })
+          res.status(200).json({ status: 0 })
+        })
+        .catch((error) => {
+          console.log(error)
+          res.status(500).json({ status: 2 })
+        })
+    else
+      post
+        .update({ title, desc, fileName, content }, { where: { course_id, trainer_id } })
+        .then(([affected_row, _]) => {
+          if (affected_row <= 0) return res.status(500).json({ status: 1 })
+          res.status(200).json({ status: 0 })
+        })
+        .catch((error) => {
+          console.log(error)
+          res.status(500).json({ status: 2 })
+        })
   })
 
 }
