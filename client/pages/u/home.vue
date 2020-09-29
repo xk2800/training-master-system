@@ -3,12 +3,9 @@
     <b-container>
       <b-row class="align-self-center vertical-center">
         <b-col lg="6" md="12" class="mx-auto">
-          <Title class="text-center my-3 bold">
-            Welcome back!
+          <Title class="text-center mt-3 bold">
+            Welcome back {{ name }}!
           </Title>
-          <div class="text-center">
-            {{ name }}
-          </div>
         </b-col>
       </b-row>
       <b-row>
@@ -19,7 +16,7 @@
           sm="10"
         >
           <n-link class="text-decoration-none" :to="nav.href">
-            <b-card class="border-0 border-round shadow-sm mt-2">
+            <b-card class="border-0 border-round shadow-sm">
               <b-card-title class="text-center">
                 {{ nav.title }}
               </b-card-title>

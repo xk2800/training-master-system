@@ -1,13 +1,13 @@
 <template>
   <b-container class="mt-4">
-    <b-row class="justify-content-center">
+    <b-row class="justify-content-center my-5">
       <b-col
         v-if="type === 0"
         lg="4"
         sm="10"
       >
         <n-link class="text-decoration-none" to="/u/report/trainer-report">
-          <b-card class="border-0 border-round shadow-sm mt-2">
+          <b-card class="border-0 border-round shadow-sm mt-4 h-100">
             <b-card-title class="text-center">
               Report for Trainers
             </b-card-title>
@@ -22,7 +22,7 @@
         sm="10"
       >
         <n-link class="text-decoration-none" to="/u/report/trainee-report">
-          <b-card class="border-0 border-round shadow-sm mt-2">
+          <b-card class="border-0 border-round shadow-sm mt-4 h-100">
             <b-card-title class="text-center">
               Report for Trainees
             </b-card-title>
