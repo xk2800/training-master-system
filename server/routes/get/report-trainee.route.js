@@ -19,7 +19,6 @@ export default (req, res) => {
 
   const { token, user_id, course_id, trainee_id } = req.query
 
-  console.log(req.query)
   if (!token || user_id === undefined || course_id === undefined) {
     return res.status(400).send('invalid usage')
   }
