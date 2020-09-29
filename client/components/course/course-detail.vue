@@ -18,8 +18,8 @@
         <b-button v-if="enrolled && selectedCourse.status === 2" variant="outline-info" @click="$bvModal.show('TE')">
           Training Evaluation
         </b-button>
-        <div>
-          <b-card-text v-b-tooltip.hover.right="'It could happen when the course has been set as complete or close. If you think this is a mistake, please report to us via feedback'" text-variant="secondary">
+        <div class="mt-3">
+          <b-card-text v-b-tooltip.hover.left="'It could happen when the course has been set as complete or close. If you think this is a mistake, please report to us via feedback'" class="text-secondary">
             Why I can't enroll into the course?
           </b-card-text>
         </div>
@@ -61,7 +61,7 @@
         </b-button>
       </div>
     </b-card>
-    <b-modal id="feedback" hide-header hide-footer>
+    <b-modal id="feedback" hide-header centered hide-footer>
       <FeedbackSubmit :course="selectedCourse" />
     </b-modal>
     <b-modal id="updateCourse" title="Update Course" centered hide-footer>
