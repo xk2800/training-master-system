@@ -12,6 +12,9 @@
           <b-button variant="outline-info" @click="setActiveNDownload(post, index)">
             Download
           </b-button>
+          <b-button v-if="userType === 1" v-b-modal.editModal variant="outline-warning" @click="setSelectedPost(post, index)">
+            Edit Material
+          </b-button>
           <b-button v-if="userType === 1" variant="outline-danger" @click="onDelete(post, index)">
             Delete
           </b-button>
@@ -30,15 +33,21 @@
       <b-modal id="postFormModal" hide-footer title="Add Material" @hidden="refreshList">
         <postForm :course="course" />
       </b-modal>
+      <b-modal id="editModal" hide-footer title="Edit Material" @hidden="refreshList">
+        <editForm :course="course" :material="post" />
+      </b-modal>
     </div>
   </b-container>
 </template>
 
 <script>
 import postForm from './post-form'
+import editForm from './edit-form'
+
 export default {
   components: {
-    postForm
+    postForm,
+    editForm
   },
   props: {
     course: {
@@ -51,13 +60,17 @@ export default {
       posts: [],
       currentPost: null,
       currentIndex: -1,
-      userType: this.$store.state.session.type
+      userType: this.$store.state.session.type,
+      post: null
     }
   },
   created () {
     this.retrieveMaterials()
   },
   methods: {
+    setSelectedPost (post) {
+      this.post = post
+    },
     retrieveMaterials () {
       this.$axios
         .get('/post', {
