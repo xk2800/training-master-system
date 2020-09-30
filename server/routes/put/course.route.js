@@ -13,7 +13,7 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { course } = models;
+const { course, Admin, Trainer } = models;
 
 export default (req, res) => {
 
@@ -26,11 +26,27 @@ export default (req, res) => {
   
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    course
-      .update({ title, desc, trainer_id }, { where: { id: course_id, admin_id } })
-      .then(([affected_row, _]) => {
-        if (affected_row <= 0) return res.status(500).json({ status: 1 })
-        res.status(200).json({ status: 0 })
+    Admin
+      .findOne({ where: { userId: admin_id } })
+      .then((admin) => {
+        Trainer
+          .findOne({ where: { userId: trainer_id } })
+          .then((trainer) => {
+            course
+              .update({ title, desc, trainer_id: trainer.id }, { where: { id: course_id, admin_id: admin.id } })
+              .then(([affected_row, _]) => {
+                if (affected_row <= 0) return res.status(500).json({ status: 1 })
+                res.status(200).json({ status: 0 })
+              })
+              .catch((error) => {
+                console.log(error)
+                res.status(500).json({ status: 2 })
+              })
+          })
+          .catch((error) => {
+            console.log(error)
+            res.status(500).json({ status: 2 })
+          })
       })
       .catch((error) => {
         console.log(error)

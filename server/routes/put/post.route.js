@@ -13,7 +13,7 @@
 import verifier from '../../utils/token-verifier.js'
 import {models} from '../../db.js';
 
-const { post } = models;
+const { post, Trainer } = models;
 
 export default (req, res) => {
 
@@ -25,28 +25,37 @@ export default (req, res) => {
 
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
-    if(!fileName || !content)
-      post
-        .update({ title, desc },{ where: { course_id, trainer_id}})
-        .then(([affected_row, _]) => {
-          if (affected_row <= 0) return res.status(500).json({ status: 1 })
-          res.status(200).json({ status: 0 })
-        })
-        .catch((error) => {
-          console.log(error)
-          res.status(500).json({ status: 2 })
-        })
-    else
-      post
-        .update({ title, desc, fileName, content }, { where: { course_id, trainer_id } })
-        .then(([affected_row, _]) => {
-          if (affected_row <= 0) return res.status(500).json({ status: 1 })
-          res.status(200).json({ status: 0 })
-        })
-        .catch((error) => {
-          console.log(error)
-          res.status(500).json({ status: 2 })
-        })
+    Trainer
+      .findOne({ where: { userId: trainer_id } })
+      .then((trainer) => {
+        if(!fileName || !content)
+          post
+            .update({ title, desc },{ where: { course_id, trainer_id: trainer.id}})
+            .then(([affected_row, _]) => {
+              if (affected_row <= 0) return res.status(500).json({ status: 1 })
+              res.status(200).json({ status: 0 })
+            })
+            .catch((error) => {
+              console.log(error)
+              res.status(500).json({ status: 2 })
+            })
+        else
+          post
+            .update({ title, desc, fileName, content }, { where: { course_id, trainer_id: trainer.id } })
+            .then(([affected_row, _]) => {
+              if (affected_row <= 0) return res.status(500).json({ status: 1 })
+              res.status(200).json({ status: 0 })
+            })
+            .catch((error) => {
+              console.log(error)
+              res.status(500).json({ status: 2 })
+            })
+      })
+      .catch((error) => {
+        console.log(error)
+        res.status(500).json({ status: 2 })
+      })
+    
   })
 
 }
