@@ -49,8 +49,11 @@ export default (req, res) => {
                         return res.status(200).send({ status: 0, trainees })
                       }
                     })
+                    .catch((error) => {
+                      console.log(error)
+                      res.status(500).json({ status: 2 })
+                    })
                 }
-                
               })
               .catch((error) => {
                 console.log(error)
@@ -61,13 +64,26 @@ export default (req, res) => {
             console.log(error)
             res.status(500).json({ status: 2 })
           })
-      else
+      else{
+        if(trainee_id !== undefined)
           enrollment
             .findOne({ where: {course_id, user_id: trainee_id} })
             .then((model) => {
               if(!model) return res.status(500).json({ status: 1 })
               return res.status(200).send({ status: 0, model })
             })
+        else
+          enrollment
+            .findAll({where : { course_id }})
+            .then((models) => {
+              if(!models) return res.status(500).json({ status: 1 })
+              res.status(200).send({ status: 0, models })
+            })
+          .catch((error) => {
+            console.log(error)
+            res.status(500).json({ status: 2 })
+          })
+      }
     })
   })
 
