@@ -27,6 +27,7 @@
               outlined
               hover
               :items="row.item.courses"
+              :fields="courseFields"
             />
           </b-card>
         </template>
@@ -63,11 +64,42 @@ export default {
           sortable: true
         }
       ],
+      courseFields: [
+        {
+          key: 'id',
+          label: 'Course ID'
+        },
+        {
+          key: 'trainer_id',
+          label: 'Trainer ID'
+        },
+        {
+          key: 'admin_id',
+          label: 'Admin ID'
+        },
+        {
+          key: 'title',
+          label: 'Course Name'
+        },
+        {
+          key: 'desc',
+          label: 'Course Description'
+        },
+        {
+          key: 'duration',
+          label: 'Course Duration'
+        },
+        {
+          key: 'enrolledNum',
+          label: 'Number of enrollment'
+        }
+      ],
       items: new Map(),
       trainers: [],
       date: this.getTime().formattedDate,
       time: this.getTime().time,
-      courses: new Map()
+      courses: new Map(),
+      courseDetail: new Map()
     }
   },
   created () {
@@ -106,6 +138,21 @@ export default {
                 this.courses.set(id, courses)
               }
               trainer.courses = this.courses.get(id)
+              trainer.courses.forEach(async (course) => {
+                const courseId = course.id
+                if (!this.courseDetail.has(courseId)) {
+                  const { data } = await this.$axios.get('/report-trainee', {
+                    params: {
+                      token: this.$store.state.session.token,
+                      user_id: this.$store.state.session.id,
+                      course_id: courseId
+                    }
+                  })
+                  const courseDtl = data.models.length
+                  this.courseDetail.set(courseId, courseDtl)
+                }
+                course.enrolledNum = this.courseDetail.get(courseId)
+              })
             })
           } else if (res.data.status === 1) {
             this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
