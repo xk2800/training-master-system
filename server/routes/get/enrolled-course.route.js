@@ -40,15 +40,13 @@ export default (req, res) => {
       .then((enrollment) => {
         for (const enroll of enrollment) {
           course
-          .findAll({ where: { id: enroll.course_id }})
-          .then((models) => { 
-            for (const model of models) {
+          .findOne({ where: { id: enroll.course_id }})
+          .then((model) => { 
               const { id, trainer_id, admin_id, title, desc, duration, status } = model
               const { progress, grade } = enroll
               courses.push({ id, trainer_id, admin_id, title, desc, duration, status, progress, grade })
-            }
-            if(enroll == enrollment[enrollment.length-1])
-              res.status(200).json({ status: 0, courses })
+              if(courses.length === enrollment.length)
+                res.status(200).json({ status: 0, courses })
           })
           .catch((error) => { 
             console.log(error)

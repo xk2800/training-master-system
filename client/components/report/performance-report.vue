@@ -3,7 +3,7 @@
     <Title>My Personal Performance</Title>
     <b-tabs pills align="center" fill>
       <b-tab title="General Performance View" active>
-        <chartBar />
+        <bar-chart v-if="loaded" :data="barChartData" :options="barChartOptions" :height="200" />
       </b-tab>
       <b-tab title="Detail Performance View">
         <div>
@@ -93,10 +93,16 @@
 </template>
 
 <script>
-import chartBar from './chart-bar'
+import BarChart from './chart-bar.js'
+
+const chartColors = {
+  green: 'rgb(75, 192, 192)',
+  blue: 'rgb(54, 162, 235)'
+}
+
 export default {
   components: {
-    chartBar
+    BarChart
   },
   data () {
     return {
@@ -105,7 +111,42 @@ export default {
       selectedCourse: null,
       date: this.getTime().formattedDate,
       time: this.getTime().time,
-      result: null
+      result: null,
+      loaded: false,
+      barChartData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Grade',
+            backgroundColor: chartColors.green,
+            data: []
+          },
+          {
+            label: 'Progress',
+            backgroundColor: chartColors.blue,
+            data: []
+          }
+        ]
+      },
+      barChartOptions: {
+        responsive: true,
+        legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: 'My Performance Overview'
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
     }
   },
   created () {
@@ -124,6 +165,13 @@ export default {
         .then((res) => {
           if (res.data.status === 0) {
             this.courses = res.data.courses
+            this.barChartData.labels = res.data.courses.map(course => course.title)
+            console.log(this.barChartData.labels)
+            res.data.courses.forEach((course) => {
+              this.barChartData.datasets[0].data.push(course.grade)
+              this.barChartData.datasets[1].data.push(course.progress)
+            })
+            this.loaded = true
           } else if (res.data.status === 1) {
             this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
           }

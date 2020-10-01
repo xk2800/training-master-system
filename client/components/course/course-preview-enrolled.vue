@@ -71,6 +71,7 @@ export default {
         .then((res) => {
           if (res.data.status === 0) {
             this.courses = res.data.courses
+            console.log(this.courses)
             this.courses.forEach(async (course) => {
               const id = course.trainer_id
               if (!this.nameMap.has(id)) {
