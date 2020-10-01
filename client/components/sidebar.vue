@@ -67,10 +67,6 @@ export default {
         {
           nav: 'Search Courses',
           href: '/u/course/search'
-        },
-        {
-          nav: 'Discussion Forums',
-          href: '/u/discussion'
         }
       ],
       reportNav: {
