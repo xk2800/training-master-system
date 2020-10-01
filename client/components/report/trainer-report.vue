@@ -35,12 +35,19 @@
       <div>
         Total number of trainer: {{ trainers.length }}
       </div>
+      <div>
+        <bar-chart v-if="loaded" :data="barChartData" :options="barChartOptions" :height="200" />
+      </div>
     </div>
   </b-card>
 </template>
 
 <script>
+import BarChart from './chart-bar.js'
 export default {
+  components: {
+    BarChart
+  },
   data () {
     return {
       fields: [
@@ -94,6 +101,36 @@ export default {
           label: 'Number of enrollment'
         }
       ],
+      loaded: false,
+      barChartData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Rating',
+            backgroundColor: 'rgb(255, 99, 132)',
+            data: []
+          }
+        ]
+      },
+      barChartOptions: {
+        responsive: true,
+        legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: 'Trainers Performance Overview'
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      },
       items: new Map(),
       trainers: [],
       date: this.getTime().formattedDate,
@@ -107,6 +144,11 @@ export default {
   },
   methods: {
     loadReport () {
+      this.loaded = false
+      this.barChartData.labels = []
+      this.barChartData.datasets.forEach((dataset) => {
+        dataset.data = []
+      })
       this.$axios
         .get('/all-trainer', {
           params: {
@@ -117,6 +159,11 @@ export default {
         .then((res) => {
           if (res.data.status === 0) {
             this.trainers = res.data.trainers
+            this.barChartData.labels = this.trainers.map(trainer => trainer.name)
+            this.trainers.forEach((trainer) => {
+              this.barChartData.datasets[0].data.push(trainer.rating)
+            })
+            this.loaded = true
             this.trainers.forEach(async (trainer) => {
               const id = trainer.trainer_id
               if (!this.items.has(id)) {

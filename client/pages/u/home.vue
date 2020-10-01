@@ -44,6 +44,16 @@
               </b-card-body>
             </b-card>
           </n-link>
+          <n-link v-else class="text-decoration-none" :to="reportNav.href">
+            <b-card class="border-0 border-round shadow-sm mt-2">
+              <b-card-title class="text-center">
+                Personal Report
+              </b-card-title>
+              <b-card-body class="text-center">
+                <b-img :src="`/performance.png`" fluid />
+              </b-card-body>
+            </b-card>
+          </n-link>
         </b-col>
       </b-row>
     </b-container>

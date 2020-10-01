@@ -69,7 +69,7 @@
         <b-button block type="submit" variant="outline-primary">
           Submit
         </b-button>
-        <p>Once submitted, no change is allowed</p>
+        <p class="text-danger">Once submitted, no change is allowed</p>
       </b-form>
     </div>
   </div>

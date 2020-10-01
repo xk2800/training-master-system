@@ -28,6 +28,16 @@
           </n-link>
         </b-button>
         <b-button
+          v-if="userType === 2"
+          variant="light"
+          class="border-round"
+          block
+        >
+          <n-link :to="reportNav.href" class="no-deco">
+            Personal Report
+          </n-link>
+        </b-button>
+        <b-button
           variant="danger"
           class="border-round"
           block

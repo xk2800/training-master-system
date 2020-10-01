@@ -45,7 +45,8 @@ export default (req, res) => {
           .then((models) => { 
             for (const model of models) {
               const { id, trainer_id, admin_id, title, desc, duration, status } = model
-              courses.push({ id, trainer_id, admin_id, title, desc, duration, status })
+              const { progress, grade } = enroll
+              courses.push({ id, trainer_id, admin_id, title, desc, duration, status, progress, grade })
             }
             if(enroll == enrollment[enrollment.length-1])
               res.status(200).json({ status: 0, courses })
