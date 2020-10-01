@@ -176,6 +176,14 @@ export default {
       } else if (this.selected === 1 && (this.selectedRate1 === -1 || this.selectedRate2 === -1 || this.selectedRate3 === -1 || this.selectedRate4 === -1 || this.selectedRate5 === -1 || this.selectedRate6 === -1 || this.selectedRate7 === -1)) {
         alert('All questions must be answered before submit')
         return
+      } else if (this.selected === 0) {
+        this.selectedRate1 = 0
+        this.selectedRate2 = 0
+        this.selectedRate3 = 0
+        this.selectedRate4 = 0
+        this.selectedRate5 = 0
+        this.selectedRate6 = 0
+        this.selectedRate7 = 0
       }
       if (rateNum < this.course.duration) {
         rateNum += 1

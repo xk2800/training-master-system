@@ -18,6 +18,7 @@
         </n-link>
       </b-col>
       <b-col
+        v-if="type !== 2"
         lg="4"
         sm="10"
       >
@@ -28,6 +29,22 @@
             </b-card-title>
             <b-card-body class="text-center">
               <b-img src="/trainee.png" fluid />
+            </b-card-body>
+          </b-card>
+        </n-link>
+      </b-col>
+      <b-col
+        v-if="type === 2"
+        lg="4"
+        sm="10"
+      >
+        <n-link class="text-decoration-none" to="/u/report/my-performance">
+          <b-card class="border-0 border-round shadow-sm mt-4 h-100">
+            <b-card-title class="text-center">
+              View My Performance
+            </b-card-title>
+            <b-card-body class="text-center">
+              <b-img src="/my-performance.png" fluid />
             </b-card-body>
           </b-card>
         </n-link>

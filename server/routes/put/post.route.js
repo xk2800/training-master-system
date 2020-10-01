@@ -17,8 +17,8 @@ const { post, Trainer } = models;
 
 export default (req, res) => {
 
-  const { token, trainer_id, course_id, title, desc, fileName, content } = req.body;
-  if(!token || trainer_id === undefined || course_id === undefined || !title) {
+  const { token, post_id, trainer_id, course_id, title, desc, fileName, content } = req.body;
+  if(!token || post_id === undefined || trainer_id === undefined || course_id === undefined || !title) {
     res.status(400).send('invalid input')
     return
   }
@@ -30,7 +30,7 @@ export default (req, res) => {
       .then((trainer) => {
         if(!fileName || !content)
           post
-            .update({ title, desc },{ where: { course_id, trainer_id: trainer.id}})
+            .update({ title, desc },{ where: { id: post_id, course_id, trainer_id: trainer.id}})
             .then(([affected_row, _]) => {
               if (affected_row <= 0) return res.status(500).json({ status: 1 })
               res.status(200).json({ status: 0 })
@@ -41,7 +41,7 @@ export default (req, res) => {
             })
         else
           post
-            .update({ title, desc, fileName, content }, { where: { course_id, trainer_id: trainer.id } })
+            .update({ title, desc, fileName, content }, { where: { id: post_id, course_id, trainer_id: trainer.id } })
             .then(([affected_row, _]) => {
               if (affected_row <= 0) return res.status(500).json({ status: 1 })
               res.status(200).json({ status: 0 })

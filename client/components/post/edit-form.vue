@@ -77,6 +77,7 @@ export default {
             token: this.$store.state.session.token,
             trainer_id: this.$store.state.session.id,
             course_id: this.course.id,
+            post_id: this.material.id,
             title: this.title,
             desc: this.desc
           })
@@ -92,6 +93,7 @@ export default {
           .put('/post', {
             token: this.$store.state.session.token,
             trainer_id: this.$store.state.session.id,
+            post_id: this.material.id,
             course_id: this.course.id,
             title: this.title,
             desc: this.desc,

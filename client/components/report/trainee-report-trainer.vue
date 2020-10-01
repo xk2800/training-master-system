@@ -32,16 +32,63 @@
         <div>
           Total number of trainee: {{ trainees.length }}
         </div>
+        <div>
+          <bar-chart v-if="loaded" :data="barChartData" :options="barChartOptions" :height="200" />
+        </div>
       </div>
     </div>
   </b-card>
 </template>
 
 <script>
+import BarChart from './chart-bar.js'
+
+const chartColors = {
+  yellow: 'rgb(255, 205, 86)',
+  purple: 'rgb(153, 102, 255)'
+}
 export default {
+  components: {
+    BarChart
+  },
   data () {
     return {
       isHidden: true,
+      loaded: false,
+      barChartData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Grade',
+            backgroundColor: chartColors.purple,
+            data: []
+          },
+          {
+            label: 'Progress',
+            backgroundColor: chartColors.yellow,
+            data: []
+          }
+        ]
+      },
+      barChartOptions: {
+        responsive: true,
+        legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: 'Trainees Performance Overview'
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      },
       fields: [
         {
           key: 'trainee_id',
@@ -92,6 +139,11 @@ export default {
         })
     },
     loadReport () {
+      this.loaded = false
+      this.barChartData.labels = []
+      this.barChartData.datasets.forEach((dataset) => {
+        dataset.data = []
+      })
       this.$axios
         .get('/report-trainee', {
           params: {
@@ -103,6 +155,12 @@ export default {
         .then((res) => {
           if (res.data.status === 0) {
             this.trainees = res.data.trainees
+            this.barChartData.labels = this.trainees.map(trainee => trainee.name)
+            this.trainees.forEach((trainee) => {
+              this.barChartData.datasets[0].data.push(trainee.grade)
+              this.barChartData.datasets[1].data.push(trainee.progress)
+            })
+            this.loaded = true
             this.isHidden = false
           } else if (res.data.status === 1) {
             this.makeToast('Access denied!', 'Bad access token, please login and try again.', 'warning')
