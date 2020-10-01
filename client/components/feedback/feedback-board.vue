@@ -1,5 +1,8 @@
 <template>
   <b-card class="border-round border-0 shadow-sm">
+    <div v-if="feedbacks.length===0">
+      There's no feedback received yet.
+    </div>
     <div>
       <b-card-group v-for="(feedback, i) in feedbacks" :key="`feedback-${i}`">
         <b-card class="border-0" :title="feedback.title" :sub-title="feedback.name">

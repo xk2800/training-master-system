@@ -46,6 +46,9 @@
         <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
           View Feedback
         </b-button>
+        <b-button variant="outline-info" @click="$bvModal.show('discussion')">
+          View Discussion
+        </b-button>
         <div class="mt-2">
           <b-button variant="outline-dark" @click="$bvModal.show('courseRecord')">
             Training Records/Remarks
@@ -59,12 +62,17 @@
         <b-button variant="outline-danger" @click="deleteCourse(selectedCourse)">
           Delete Course
         </b-button>
-        <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
-          View Feedback
-        </b-button>
-        <b-button variant="outline-info" @click="$bvModal.show('postBoard')">
-          View Material
-        </b-button>
+        <div class="mt-2">
+          <b-button variant="outline-info" @click="$bvModal.show('discussion')">
+            View Discussion
+          </b-button>
+          <b-button variant="outline-primary" @click="$bvModal.show('feedbackBoard')">
+            View Feedback
+          </b-button>
+          <b-button variant="outline-warning" @click="$bvModal.show('postBoard')">
+            View Material
+          </b-button>
+        </div>
       </div>
     </b-card>
     <b-modal id="feedback" hide-header centered hide-footer>

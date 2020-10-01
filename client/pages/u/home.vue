@@ -26,8 +26,6 @@
             </b-card>
           </n-link>
         </b-col>
-      </b-row>
-      <b-row class="justify-content-center">
         <b-col
           v-for="(reportNav, i) in reportNavs"
           :key="`reportNav${i}`"
@@ -35,7 +33,7 @@
           sm="10"
         >
           <n-link v-if="type !== 2" class="text-decoration-none" :to="reportNav.href">
-            <b-card class="border-0 border-round shadow-sm mt-2">
+            <b-card class="border-0 border-round shadow-sm">
               <b-card-title class="text-center">
                 {{ reportNav.title }}
               </b-card-title>
@@ -45,7 +43,7 @@
             </b-card>
           </n-link>
           <n-link v-else class="text-decoration-none" :to="reportNav.href">
-            <b-card class="border-0 border-round shadow-sm mt-2">
+            <b-card class="border-0 border-round shadow-sm">
               <b-card-title class="text-center">
                 Personal Report
               </b-card-title>
