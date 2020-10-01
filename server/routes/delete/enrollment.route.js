@@ -14,8 +14,6 @@ const { enrollment } = models;
 
 export default (req, res) => {
 
-  console.log(req.query)
-
   const { token, trainee_id, course_id } = req.query;
 
   if(!token || trainee_id === undefined || course_id === undefined)

@@ -75,11 +75,6 @@ export default {
           href: '/u/course/mycourse'
         },
         {
-          title: 'Discussion',
-          image: 'discussion.png',
-          href: '/u/discussion'
-        },
-        {
           title: 'Search Course',
           image: 'searchcourse.png',
           href: '/u/course/search'

@@ -34,7 +34,6 @@ export default (req, res) => {
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
     
-    console.log(req.query)
     if(type == 2) {  // trainee
       enrollment
       .findAll({ where: { user_id }})

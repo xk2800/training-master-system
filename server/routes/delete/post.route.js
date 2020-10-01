@@ -15,8 +15,6 @@ const { post, Trainer } = models;
 
 export default (req, res) => {
   const { token, trainer_id, course_id, post_id } = req.query
-
-  console.log(req.query)
   
   if(!token || trainer_id === undefined || course_id === undefined) {
     res.status(400).send('invalid input')

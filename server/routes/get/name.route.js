@@ -22,9 +22,7 @@ export default (req, res) => {
 
   if(id !== undefined)
     user
-      .findOne({
-        where: { id }
-      })
+      .findByPk(id)
       .then((model) => {
         if (!model) return res.status(200).json({ status: 1 })
         return res.status(200).json({ status: 0, name: model.name })
@@ -41,9 +39,7 @@ export default (req, res) => {
       .then((model) => {
         if (!model) return res.status(200).json({ status: 1 })
         user
-          .findOne({
-            where: { id: model.userId }
-          })
+          .findByPk(model.userId)
           .then((model) => {
             if (!model) return res.status(200).json({ status: 1 })
             return res.status(200).json({ status: 0, name: model.name })

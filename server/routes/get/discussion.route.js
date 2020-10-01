@@ -18,8 +18,8 @@ const { discussion } = models;
 
 export default (req, res) => {
   
-  const { token, limit, offset } = req.query
-  if (!token || limit === undefined || offset === undefined) {
+  const { token, limit, offset, course_id } = req.query
+  if (!token || limit === undefined || offset === undefined || course_id === undefined) {
     return res.status(400).send('invalid usage')
   }
 
@@ -27,14 +27,17 @@ export default (req, res) => {
     if (!valid) return res.status(200).json({ status: 1 })
     discussion
       .findAll({
+        where: { course_id }
+      },
+      {
         order: [['id', 'DESC']],
         limit, offset
       })
       .then((models) => {
         const discussions = []
         for (const model of models) {
-          const { id, user_id, content } = model
-          discussions.push({ id, user_id, content })
+          const { id, user_id, content, datetime } = model
+          discussions.push({ id, user_id, content, datetime })
         }
         res.status(200).json({ status: 0, discussions })
       })
