@@ -1,5 +1,8 @@
 <template>
   <b-card class="border-round border-0 shadow-sm">
+    <div v-if="discussions.length === 0">
+      There's no discussion yet. Post the very first comment here!
+    </div>
     <div>
       <b-card-group v-for="(discussion, i) in discussions" :key="`discussion-${i}`">
         <b-card class="border-0" :sub-title="discussion.name">

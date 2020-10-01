@@ -1,5 +1,14 @@
 <template>
   <b-container>
+    <div v-if="posts.length===0 && userType === 2">
+      Your trainer has not posted any material so far. If you think this is a mistake, please contact him/her via the feedback
+    </div>
+    <div v-else-if="posts.length===0 && userType === 1">
+      You has not posted any material so far.
+    </div>
+    <div v-else-if="posts.length===0">
+      The trainer has not posted any material so far.
+    </div>
     <b-list-group>
       <b-list-group-item
         v-for="(post, index) in posts"
