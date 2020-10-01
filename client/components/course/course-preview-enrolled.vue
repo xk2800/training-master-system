@@ -13,7 +13,7 @@
       <b-row>
         <b-col lg="8">
           <b-card-title>{{ course.title }}</b-card-title>
-          <b-card-sub-title>Trainer: {{ course.name }} Duration: {{ course.duration }} month(s) Status: {{ (course.status == 1) ? "Active" : (course.status == 2) ? "Complete" : (course.status == 3) ? "Postpone" : "Close"}}</b-card-sub-title>
+          <b-card-sub-title>Trainer: {{ course.name }} Duration: {{ course.duration }} month(s) Status: {{ (course.status == 1) ? "Active" : (course.status == 2) ? "Complete" : (course.status == 3) ? "Postpone" : "Close" }}</b-card-sub-title>
           <b-card-text class="mt-2">
             {{ course.desc }}
           </b-card-text>
