@@ -11,22 +11,23 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { discussion, user } = models;
+const { discussion, user, course } = models;
 
 export default (req, res) => {
-  const { token, user_id, content } = req.body
+  const { token, user_id, course_id, content } = req.body
 
-  if(!content || !user_id || !token) {
+  if(!content || !user_id || !token || !course_id) {
     res.status(400).send('Content cannot be empty');
     return
   }
 
   discussion.belongsTo(user, {foreignKey: 'user_id'});
+  discussion.belongsTo(course, {foreignKey: 'course_id'})
 
   verifier(token, (valid) => {
     if (!valid) return res.status(200).json({ status: 1 })
     discussion
-      .create({ user_id, content }, { include: [user] })
+      .create({ user_id, course_id, content }, { include: [user] })
       .then((model) => {
         if (!model) return res.status(200).json({ status: 1 })
         res.status(200).json({ status: 0 })

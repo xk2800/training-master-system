@@ -15,6 +15,7 @@
               Delete
             </b-button>
           </b-card-text>
+          <b-card-text class="grey"><em>{{ discussion.datetime }}</em></b-card-text>
         </b-card>
       </b-card-group>
     </div>
@@ -41,6 +42,12 @@
 
 <script>
 export default {
+  props: {
+    course: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
       nameMap: new Map(),
@@ -59,7 +66,8 @@ export default {
           params: {
             token: this.$store.state.session.token,
             limit: 7,
-            offset
+            offset,
+            course_id: this.course.id
           }
         })
         .then((res) => {
@@ -88,6 +96,7 @@ export default {
         .post('/discussion', {
           token: this.$store.state.session.token,
           user_id: this.$store.state.session.id,
+          course_id: this.course.id,
           content: this.content
         })
         .then((res) => {

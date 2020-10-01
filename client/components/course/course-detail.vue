@@ -15,6 +15,9 @@
         <b-button v-if="enrolled" variant="outline-success" :disabled="isDisable" @click="$bvModal.show('postBoard')">
           View Material
         </b-button>
+        <b-button v-if="enrolled" variant="outline-info" @click="$bvModal.show('discussion')">
+          View Discussion
+        </b-button>
         <b-button variant="outline-primary" @click="$bvModal.show('feedback')">
           My feedback
         </b-button>
@@ -82,6 +85,9 @@
     <b-modal id="TE" size="xl" title="Training Evaluation" centered hide-footer>
       <TEvaluation :course="selectedCourse" />
     </b-modal>
+    <b-modal id="discussion" size="xl" title="Discussion Board" centered hide-footer>
+      <DiscussionBoard :course="selectedCourse" />
+    </b-modal>
   </div>
 </template>
 
@@ -92,6 +98,7 @@ import FeedbackBoard from '~/components/feedback/feedback-board'
 import CourseMaterial from '~/components/post/post-display'
 import CourseRecord from '~/components/course/course-record'
 import TEvaluation from '~/components/course/course-evaluation'
+import DiscussionBoard from '~/components/discussion/discussion-board'
 
 export default {
   components: {
@@ -100,7 +107,8 @@ export default {
     FeedbackSubmit,
     CourseMaterial,
     CourseRecord,
-    TEvaluation
+    TEvaluation,
+    DiscussionBoard
   },
   props: {
     selectedCourse: {
