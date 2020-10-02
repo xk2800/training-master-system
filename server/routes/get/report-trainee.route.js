@@ -45,7 +45,7 @@ export default (req, res) => {
                     .then((user) => {
                       const { id, name, email } = user
                       trainees.push({ trainee_id: id, name, email, progress, grade, rateSubmitted, enrollDate })
-                      if(model == models[models.length-1]){
+                      if(trainees.length == models.length){
                         return res.status(200).send({ status: 0, trainees })
                       }
                     })

@@ -34,7 +34,7 @@ export default (req, res) => {
             for(const model of models){
               const { id, title, desc, duration, status } = model
               courses.push({ id, title, desc, duration, status })
-              if(model == models[models.length-1]){
+              if(courses.length === models.length){
                 res.status(200).json({ status: 0, courses })
               }
             }
