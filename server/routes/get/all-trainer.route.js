@@ -39,7 +39,7 @@ export default (req, res) => {
                 const { rating } = trainer
                 const { id, userId, name } = model
                 trainers.push({ trainer_id: id, name, rating })
-                if(model == models[models.length-1]){
+                if(trainers.length === models.length){
                   return res.status(200).send({ status: 0, trainers })
                 }
               })
