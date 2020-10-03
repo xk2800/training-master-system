@@ -13,12 +13,12 @@
 import verifier from '../../utils/token-verifier.js'
 import { models } from '../../db.js'
 
-const { course, Admin, Trainer } = models;
+const { course, Admin, Trainer, enrollment } = models;
 
 export default (req, res) => {
 
   const {token, admin_id, trainer_id, course_id, title, desc} = req.body
-
+  
   if(!token || admin_id === undefined || trainer_id == undefined || course_id === undefined || !title || !desc) {
     res.status(400).send('invalid input')
     return
@@ -36,7 +36,17 @@ export default (req, res) => {
               .update({ title, desc, trainer_id: trainer.id }, { where: { id: course_id, admin_id: admin.id } })
               .then(([affected_row, _]) => {
                 if (affected_row <= 0) return res.status(500).json({ status: 1 })
-                res.status(200).json({ status: 0 })
+                enrollment
+                  .update({ trainer_id: trainer.id }, { where: { course_id: course_id } })
+                  .then(([affected_row, _]) => {
+                    console.log(_)
+                    if (affected_row <= 0) return res.status(500).json({ status: 1 })
+                    res.status(200).json({ status: 0 })
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    res.status(500).json({ status: 2 })
+                  })
               })
               .catch((error) => {
                 console.log(error)

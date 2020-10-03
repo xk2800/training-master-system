@@ -128,7 +128,6 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(this.form.trainerSelected.id)
           this.makeToast('Internal Error', error, 'danger')
         })
     },
