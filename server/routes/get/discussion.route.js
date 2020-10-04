@@ -19,6 +19,8 @@ const { discussion } = models;
 export default (req, res) => {
   
   const { token, limit, offset, course_id } = req.query
+
+  console.log(req.query)
   if (!token || limit === undefined || offset === undefined || course_id === undefined) {
     return res.status(400).send('invalid usage')
   }
