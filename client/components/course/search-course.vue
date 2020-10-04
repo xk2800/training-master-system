@@ -53,7 +53,8 @@ export default {
       searchQuery: '',
       courses: [],
       currentCourse: null,
-      currentIndex: ''
+      currentIndex: '',
+      nameMap: new Map()
     }
   },
   watch: {
@@ -69,6 +70,17 @@ export default {
         }
       })
       this.courses = data.courses
+      this.courses.forEach(async (course) => {
+        const id = course.trainer_id
+        if (!this.nameMap.has(id)) {
+          const { data } = await this.$axios.get('/name', { params: { trainer_id: id } })
+          if (data.name) {
+            const name = data.name
+            this.nameMap.set(id, name)
+          }
+        }
+        course.name = this.nameMap.get(id)
+      })
     }
   },
   methods: {
