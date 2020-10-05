@@ -59,7 +59,7 @@ export default {
       curruser: this.$store.state.session.id
     }
   },
-  created () {
+  mounted () {
     this.loadContent(0)
   },
   methods: {

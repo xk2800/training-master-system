@@ -33,8 +33,8 @@ export default (req, res) => {
         const courses = []
         for(const model of models){
           if(model.title.toLowerCase().includes(searchName)){
-            const { trainer_id, admin_id, title, desc, duration, status } = model
-            courses.push({trainer_id, admin_id, title, desc, duration, status})
+            const { id, trainer_id, admin_id, title, desc, duration, status } = model
+            courses.push({id, trainer_id, admin_id, title, desc, duration, status})
           }
         }
         res.status(200).json({ status: 0, courses })

@@ -19,27 +19,42 @@
             </b-card-text>
           </b-col>
           <b-col lg="4" class="mt-4 text-center">
-            <b-button variant="outline-info" @click="selectedCourse(course, i);">
+            <b-button variant="outline-info" @click="selectedCourse(course, i); $bvModal.show('ViewCourse');">
               View Course Information
             </b-button>
           </b-col>
         </b-row>
       </b-card>
     </div>
+    <b-modal
+      v-if="currentCourse"
+      id="ViewCourse"
+      :title="currentCourse.title"
+      size="lg"
+      centered
+      hide-footer
+    >
+      <courseDetail :selected-course="currentCourse" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import Coursepreview from '~/components/course/course-preview'
+import courseDetail from '~/components/course/course-detail'
 
 export default {
   components: {
-    Coursepreview
+    Coursepreview,
+    courseDetail
   },
   data () {
     return {
       searchQuery: '',
-      courses: []
+      courses: [],
+      currentCourse: null,
+      currentIndex: '',
+      nameMap: new Map()
     }
   },
   watch: {
@@ -55,6 +70,23 @@ export default {
         }
       })
       this.courses = data.courses
+      this.courses.forEach(async (course) => {
+        const id = course.trainer_id
+        if (!this.nameMap.has(id)) {
+          const { data } = await this.$axios.get('/name', { params: { trainer_id: id } })
+          if (data.name) {
+            const name = data.name
+            this.nameMap.set(id, name)
+          }
+        }
+        course.name = this.nameMap.get(id)
+      })
+    }
+  },
+  methods: {
+    selectedCourse (course, i) {
+      this.currentCourse = course
+      this.currentIndex = i
     }
   }
 }
