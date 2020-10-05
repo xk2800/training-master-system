@@ -45,7 +45,7 @@ export default (req, res) => {
                     .then((user) => {
                       const { id, name, email } = user
                       trainees.push({ trainee_id: id, name, email, progress, grade, rateSubmitted, enrollDate })
-                      if(trainees.length == models.length){
+                      if(trainees.length === models.length){
                         return res.status(200).send({ status: 0, trainees })
                       }
                     })
@@ -70,6 +70,7 @@ export default (req, res) => {
             .findOne({ where: {course_id, user_id: trainee_id} })
             .then((model) => {
               if(!model) return res.status(500).json({ status: 1 })
+              console.log(model)
               return res.status(200).send({ status: 0, model })
             })
             .catch((error) => {
@@ -81,7 +82,22 @@ export default (req, res) => {
             .findAll({where : { course_id }})
             .then((models) => {
               if(!models) return res.status(500).json({ status: 1 })
-              res.status(200).send({ status: 0, models })
+              for (const model of models) {
+                const {grade, progress, rateSubmitted, enrollDate} = model
+                user
+                  .findOne({ where: { id: model.user_id }})
+                  .then((user) => {
+                    const { id, name, email } = user
+                    trainees.push({ trainee_id: id, name, email, progress, grade, rateSubmitted, enrollDate })
+                    if(trainees.length === models.length){
+                      return res.status(200).send({ status: 0, trainees })
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    res.status(500).json({ status: 2 })
+                  })
+              }
             })
             .catch((error) => {
               console.log(error)
