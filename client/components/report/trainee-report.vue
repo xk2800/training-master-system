@@ -41,18 +41,18 @@
                     <b-col sm="3" class="text-sm-right">
                       <b>Progress: </b>
                     </b-col>
-                    <b-col>{{ row.item.progress }}</b-col>
+                    <b-col>{{ row1.item.progress }}</b-col>
                     <b-col sm="3" class="text-sm-right">
                       <b>Grade: </b>
                     </b-col>
-                    <b-col>{{ row.item.grade }}</b-col>
+                    <b-col>{{ row1.item.grade }}</b-col>
                   </b-row>
 
                   <b-row class="mb-2">
                     <b-col sm="3" class="text-sm-right">
                       <b>Rate Submitted: </b>
                     </b-col>
-                    <b-col>{{ row.item.rateSubmitted }}</b-col>
+                    <b-col>{{ row1.item.rateSubmitted }}</b-col>
                     <b-col sm="3" class="text-sm-right">
                       <b-button size="sm" @click="row1.toggleDetails">
                         Hide Details
@@ -166,11 +166,11 @@ export default {
                     }
                   })
                   const courseDtl = data.model
-                  this.courseDetail.set(id, courseDtl)
+                  this.courseDetail.set(courseId, courseDtl)
                 }
-                trainee.progress = this.courseDetail.get(id).progress
-                trainee.rateSubmitted = this.courseDetail.get(id).rateSubmitted
-                trainee.grade = this.courseDetail.get(id).grade
+                course.progress = this.courseDetail.get(courseId).progress
+                course.rateSubmitted = this.courseDetail.get(courseId).rateSubmitted
+                course.grade = this.courseDetail.get(courseId).grade
               })
             })
           } else if (res.data.status === 1) {
