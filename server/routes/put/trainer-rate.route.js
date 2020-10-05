@@ -32,7 +32,7 @@ export default (req, res) => {
         res.status(500).json({ status: 2 })
       })
 
-    const newRating = (rating + oriRating) / 2 * 100;
+    const  newRating = (oriRating === 0) ? (rating * 100) : ((rating + oriRating) / 2 * 100);
 
     Trainer
       .update({ rating: newRating }, { where: { id: trainer_id } })
