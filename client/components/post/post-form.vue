@@ -69,6 +69,10 @@ export default {
   methods: {
     savePost (evt) {
       evt.preventDefault()
+      if (!this.file) {
+        alert('Please insert the material file')
+        return
+      }
       this.$axios
         .post('/post', {
           token: this.$store.state.session.token,
